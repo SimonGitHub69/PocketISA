@@ -40,6 +40,77 @@ Public Sub FooterTopForBar (barH As Int) As Int
 	Return Max(0, 100%y - barH - nav)
 End Sub
 
+' Colori toolbar Swift condivisi (Lista Tabelle / Impostazioni).
+Public Sub SwiftFaceSecondario As Int
+	Return Colors.RGB(69, 90, 100)
+End Sub
+Public Sub SwiftSideSecondario As Int
+	Return Colors.RGB(38, 50, 56)
+End Sub
+Public Sub SwiftFaceCta As Int
+	Return Colors.RGB(25, 118, 210)
+End Sub
+Public Sub SwiftSideCta As Int
+	Return Colors.RGB(13, 71, 161)
+End Sub
+
+' Riposiziona lo SwiftButton senza staccarlo dal parent.
+' RemoveViewFromParent + AddView in Impostazioni lo toglieva e non lo riagganciava.
+Public Sub SwiftAssicuraSuActivity (act As Activity, btn As SwiftButton, left As Int, top As Int, width As Int, height As Int)
+	Try
+		If btn.IsInitialized = False Or btn.mBase.IsInitialized = False Then Return
+		Dim base As B4XView = btn.mBase
+		base.SetLayoutAnimated(0, left, top, width, height)
+		base.Visible = True
+		base.Color = Colors.Transparent
+		btn.Enabled = True
+		base.BringToFront
+	Catch
+		Log("SwiftAssicuraSuActivity: " & LastException)
+	End Try
+End Sub
+
+' SwiftButton definito: rilievo, icona (+ etichetta), testo centrato sulla faccia.
+Public Sub SwiftPreparaDefinito (act As Activity, btn As SwiftButton, left As Int, top As Int, width As Int, height As Int, _
+		face As Int, side As Int, icona As String, etichetta As String, soloIcona As Boolean)
+	Try
+		If btn.IsInitialized = False Or btn.mBase.IsInitialized = False Then Return
+		If width < 40dip Or height < 40dip Then Return
+		SwiftAssicuraSuActivity(act, btn, left, top, width, height)
+		btn.mBase.Color = Colors.Transparent
+		btn.SideHeight = 8dip
+		btn.CornersRadius = 10dip
+		btn.SetColors(face, side)
+		btn.Enabled = True
+		btn.mBase.Visible = True
+		btn.Update
+
+		Dim faceH As Int = Max(36dip, btn.mBase.Height - btn.SideHeight)
+		btn.xLBL.SetLayoutAnimated(0, 0, 0, btn.mBase.Width, faceH)
+
+		Dim cs As CSBuilder
+		cs.Initialize
+		cs.Alignment("ALIGN_CENTER")
+		If soloIcona Or etichetta.Trim = "" Then
+			cs.Typeface(Typeface.FONTAWESOME).Size(36).Color(Colors.White).Append(icona).PopAll
+		Else
+			cs.Typeface(Typeface.FONTAWESOME).Size(24).Color(Colors.White).Append(icona).PopAll
+			cs.Append(CRLF)
+			cs.Typeface(Typeface.DEFAULT_BOLD).Size(14).Color(Colors.White).Append(etichetta).PopAll
+		End If
+		btn.xLBL.Text = cs
+		btn.xLBL.TextColor = Colors.White
+		btn.xLBL.SetTextAlignment("CENTER", "CENTER")
+		Dim lbl As Label = btn.xLBL
+		lbl.SingleLine = False
+		lbl.Gravity = Gravity.CENTER
+		lbl.Padding = Array As Int(2dip, 2dip, 2dip, 2dip)
+		btn.mBase.BringToFront
+	Catch
+		Log("SwiftPreparaDefinito: " & LastException)
+	End Try
+End Sub
+
 ' Ricerca A-Z: pannelli a tutto schermo, lettere a filo basso/destro, tabella nello spazio utile.
 ' letterButtons = lista dei Button lettere (#, A..Z, 0..9). Idempotente su Resume.
 Public Sub AdattaRicercaAZFullscreen (pnlMain As Panel, pnlAlt As Panel, tbl1 As B4XTable, tbl2 As B4XTable, letterButtons As List)
@@ -837,10 +908,87 @@ Public Sub SyncPathDbMirrorToSqlite (SQL As SQL, folder As String, dbFile As Str
 	End Try
 End Sub
 
+' Cartella suoni: Path sounds se impostato, altrimenti la cartella di default dell'app.
+Public Sub GetSoundsFolder As String
+	Try
+		If Main.PathSounds <> Null And Main.PathSounds.Trim <> "" Then
+			Dim custom As String = NormalizzaPathDb(Main.PathSounds.Trim)
+			If IsUsableDbFolder(custom) Then
+				EnsureFolderExists(custom)
+				Return custom
+			End If
+		End If
+	Catch
+		Log("GetSoundsFolder: " & LastException.Message)
+	End Try
+	Try
+		If File.ExternalWritable Then Return rp.GetSafeDirDefaultExternal("sounds")
+	Catch
+		Log(LastException.Message)
+	End Try
+	Return File.DirInternal
+End Sub
+
+Private Sub PathSoundsConfigFile As String
+	Return "pocketisa_pathsounds.txt"
+End Sub
+
+Public Sub SavePathSoundsConfig (folder As String)
+	Try
+		If folder = Null Then folder = ""
+		folder = NormalizzaPathDb(folder)
+		If folder <> "" And IsUsableDbFolder(folder) = False Then
+			Log("PathSounds rifiutato (non valido): " & folder)
+			folder = ""
+		End If
+		If folder = "" Then
+			ClearPathSoundsConfig
+			Return
+		End If
+		File.WriteString(File.DirInternal, PathSoundsConfigFile, folder)
+		Main.PathSounds = folder
+		Log("PathSounds salvato: " & folder)
+	Catch
+		Log(LastException.Message)
+	End Try
+End Sub
+
+Public Sub LoadPathSoundsConfig As Boolean
+	Try
+		If File.Exists(File.DirInternal, PathSoundsConfigFile) = False Then Return False
+		Dim folder As String = File.ReadString(File.DirInternal, PathSoundsConfigFile)
+		If folder = Null Then Return False
+		folder = NormalizzaPathDb(folder.Trim)
+		If folder = "" Or IsUsableDbFolder(folder) = False Then
+			Log("PathSounds config non usabile: " & folder)
+			ClearPathSoundsConfig
+			Return False
+		End If
+		Main.PathSounds = folder
+		Log("PathSounds caricato: " & folder)
+		Return True
+	Catch
+		Log(LastException.Message)
+		Return False
+	End Try
+End Sub
+
+Public Sub ClearPathSoundsConfig
+	Try
+		If File.Exists(File.DirInternal, PathSoundsConfigFile) Then
+			File.Delete(File.DirInternal, PathSoundsConfigFile)
+		End If
+		Main.PathSounds = ""
+		Log("PathSounds config cancellato")
+	Catch
+		Log(LastException.Message)
+	End Try
+End Sub
+
 Sub CopySoundsIfNeeded (Filename As String)
 	Try
 		' Non sovrascrivere DirExt (deve restare la cartella del DB)
-		Dim soundDir As String = rp.GetSafeDirDefaultExternal("sounds")
+		Dim soundDir As String = GetSoundsFolder
 		If File.Exists(soundDir, Filename) = False Then
 			File.Copy(File.DirAssets, Filename, soundDir, Filename)
 			Log(File.DirAssets & " - " & Filename & " - " & soundDir & " - " & Filename)

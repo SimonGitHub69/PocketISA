@@ -322,6 +322,7 @@ Sub Process_Globals
 	Dim SwitchMode_SPP As Int
 	Dim PathImages As String
 	Dim PathDB As String
+	Dim PathSounds As String
 	Dim NRListinoMin As Int
 	Dim TimeOut As Int = 600000  ' Aggiunto un timeout di 10 minuti
 	Dim mSoundPool As SoundPool
@@ -540,6 +541,7 @@ Sub Activity_Create(FirstTime As Boolean)
 	' Path DB: PRIMA il file config (DirInternal), poi si apre il SQLite su quel path.
 	' Mai il contrario: Path_DB dentro SQLite non puo' indicare dove sta il DB stesso.
 	ExtraUtility.LoadPathDBConfig
+	ExtraUtility.LoadPathSoundsConfig
 	If DBName = "" Then DBName = Lista_DBname(ComboBoxDitte.SelectedIndex)
 	ExtraUtility.CopyDBIfNeeded(DBName)
 	SQLDataAccess.Initialize(ExtraUtility.DirExt, DBName, False)

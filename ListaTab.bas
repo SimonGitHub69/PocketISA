@@ -29,6 +29,13 @@ Sub Globals
 	Private FooterBarH As Int
 	Private pnlGap1 As Panel
 	Private pnlGap2 As Panel
+	Private pnlFooter As Panel
+	Private btnTabElimina As Button
+	Private btnTabAzzera As Button
+	Private btnTabSalva As Button
+	Private ShowElimina As Boolean
+	Private ShowAzzera As Boolean
+	Private ShowSalva As Boolean
 	Private SelectedRows As B4XSet
 	Private SelectionColor As Int = 0xFF009DFF
 	Private MultiSelection As Boolean = False ' serve per gestire multiselezione
@@ -48,48 +55,42 @@ Sub Activity_Create(FirstTime As Boolean)
 	Dialog.Initialize(Activity)
 	Select NewDocument.vTipoTab
 		Case 1
-			' Clienti Fornitori: stesso SwiftButton a rilievo della Lista Tabelle
-			If SwiftButton2.IsInitialized Then SwiftButton2.mBase.Visible = False
-			If SwiftButton3.IsInitialized Then SwiftButton3.mBase.Visible = False
+			ShowElimina = False
+			ShowAzzera = False
+			ShowSalva = True
 		    CliForTab(Choose_Menu.vTipoCliFor)	
 		Case 2
-			' Listino: stesso SwiftButton a rilievo
-			If SwiftButton2.IsInitialized Then SwiftButton2.mBase.Visible = False
-			If SwiftButton3.IsInitialized Then SwiftButton3.mBase.Visible = False
+			ShowElimina = False
+			ShowAzzera = False
+			ShowSalva = True
 			ListinoTab
 		Case 3		
-			' Lista tabelle	
-			SwiftButton1.mBase.Visible=True
-			SwiftButton2.mBase.Visible=True
-			SwiftButton3.mBase.Visible=True
+			' Lista tabelle: Elimina, Azzera, Salva
+			ShowElimina = True
+			ShowAzzera = True
+			ShowSalva = True
 			ListaTabSqlite				
 		Case 4
-			SwiftButton1.mBase.Visible=True
-			SwiftButton2.mBase.Visible=True
-			SwiftButton3.mBase.Visible=True
+			ShowElimina = False
+			ShowAzzera = False
+			ShowSalva = True
 			ListaDocTab(TesteDoc_Kuore_Spunta.vTipoDoc)	
 		Case Else
-			If SwiftButton1.IsInitialized Then SwiftButton1.mBase.Visible = False
-			If SwiftButton2.IsInitialized Then SwiftButton2.mBase.Visible = False
-			If SwiftButton3.IsInitialized Then SwiftButton3.mBase.Visible = False
+			ShowElimina = False
+			ShowAzzera = False
+			ShowSalva = False
 	End Select	
 End Sub
 
-' Freccia conferma Clienti/Listino: stesso SwiftButton1 a rilievo della Lista Tabelle.
+' Solo il bottone blu di conferma (Clienti/Listino/Documenti).
 Private Sub PreparaFrecciaConferma As ResumableSub
 	Try
-		If SwiftButton2.IsInitialized Then SwiftButton2.mBase.Visible = False
-		If SwiftButton3.IsInitialized Then SwiftButton3.mBase.Visible = False
-		If SwiftButton1.IsInitialized Then
-			SwiftButton1.mBase.Visible = True
-			SwiftButton1.Enabled = True
-		End If
-		FooterBarH = 60dip
+		ShowElimina = False
+		ShowAzzera = False
+		ShowSalva = True
+		FooterBarH = 58dip
 		Wait For (StileBottoniListaTabelle) Complete (ok As Boolean)
-		If SwiftButton1.IsInitialized And SwiftButton1.mBase.IsInitialized Then
-			FooterBarH = SwiftButton1.mBase.Height
-			SwiftButton1.mBase.BringToFront
-		End If
+		If pnlFooter.IsInitialized Then pnlFooter.BringToFront
 	Catch
 		Log("PreparaFrecciaConferma: " & LastException)
 	End Try
@@ -97,11 +98,7 @@ Private Sub PreparaFrecciaConferma As ResumableSub
 End Sub
 
 Sub Activity_Resume
-	If NewDocument.vTipoTab = 1 Or NewDocument.vTipoTab = 2 Then
-		If SwiftButton1.IsInitialized And SwiftButton1.mBase.IsInitialized Then
-			SwiftButton1.mBase.BringToFront
-		End If
-	End If
+	If pnlFooter.IsInitialized Then pnlFooter.BringToFront
 End Sub
 
 Sub Activity_Pause (UserClosed As Boolean)
@@ -154,7 +151,6 @@ private Sub CliForTab(TipoCliFor As String)
 
 		Dim tableTop As Int = B4XTable1.mBase.Top
 		Dim footerTop As Int = 100%y - FooterBarH
-		If SwiftButton1.IsInitialized And SwiftButton1.mBase.IsInitialized Then footerTop = SwiftButton1.mBase.Top
 		Dim tableH As Int = Max(220dip, footerTop - tableTop - 4dip)
 		B4XTable1.mBase.Height = tableH
 
@@ -322,61 +318,100 @@ private Sub ListaDocTab(TipoDoc As String)
 	Next
 End Sub
 
+' Stessa barra di Impostazioni: Elimina | Azzera | Salva.
 Private Sub StileBottoniListaTabelle As ResumableSub
 	Try
-		Dim margin As Int = 8dip
-		Dim gap As Int = 2dip ' bande bianche sottili
-		Dim btnH As Int = 64dip
-		Dim topBtn As Int = 100%y - btnH - 4dip
-		FooterBarH = btnH + 4dip
+		NascondiSwiftLista
 
-		Dim faceSec As Int = Colors.RGB(69, 90, 100)
-		Dim sideSec As Int = Colors.RGB(38, 50, 56)
-		Dim faceCta As Int = Colors.RGB(25, 118, 210)
-		Dim sideCta As Int = Colors.RGB(13, 71, 161)
+		Dim margin As Int = 6dip
+		Dim gap As Int = 6dip
+		Dim barH As Int = 58dip
+		Dim topBtn As Int = 100%y - barH
+		If topBtn < 0 Then topBtn = 0
+		FooterBarH = barH
 
-		Dim nVis As Int = 0
-		If SwiftButton2.IsInitialized And SwiftButton2.mBase.Visible Then nVis = nVis + 1
-		If SwiftButton3.IsInitialized And SwiftButton3.mBase.Visible Then nVis = nVis + 1
-		If SwiftButton1.IsInitialized And SwiftButton1.mBase.Visible Then nVis = nVis + 1
-		If nVis = 0 Then Return True
+		If pnlFooter.IsInitialized = False Then
+			pnlFooter.Initialize("")
+			Activity.AddView(pnlFooter, 0, topBtn, 100%x, barH)
+			btnTabElimina.Initialize("btnTabElimina")
+			btnTabAzzera.Initialize("btnTabAzzera")
+			btnTabSalva.Initialize("btnTabSalva")
+			pnlFooter.AddView(btnTabElimina, 0, 0, 10dip, 10dip)
+			pnlFooter.AddView(btnTabAzzera, 0, 0, 10dip, 10dip)
+			pnlFooter.AddView(btnTabSalva, 0, 0, 10dip, 10dip)
+			PreparaBottoneLista(btnTabElimina, "Elimina", Colors.RGB(69, 90, 100))
+			PreparaBottoneLista(btnTabAzzera, "Azzera", Colors.RGB(69, 90, 100))
+			PreparaBottoneLista(btnTabSalva, "Salva", Colors.RGB(25, 118, 210))
+		End If
 
+		pnlFooter.SetLayout(0, topBtn, 100%x, barH)
+		pnlFooter.Color = Colors.White
+		pnlFooter.Visible = True
+
+		Dim slotW As Int = (pnlFooter.Width - margin * 2 - gap * 2) / 3
+		If slotW < 40dip Then slotW = 40dip
+		Dim bh As Int = barH - 8dip
+		btnTabElimina.SetLayout(margin, 4dip, slotW, bh)
+		btnTabAzzera.SetLayout(margin + slotW + gap, 4dip, slotW, bh)
+		btnTabSalva.SetLayout(margin + (slotW + gap) * 2, 4dip, slotW, bh)
+		btnTabElimina.Visible = ShowElimina
+		btnTabAzzera.Visible = ShowAzzera
+		btnTabSalva.Visible = ShowSalva
+		' Clienti, Fornitori e Listini: freccia grande al posto di Salva
+		If NewDocument.vTipoTab = 1 Or NewDocument.vTipoTab = 2 Then
+			btnTabSalva.Typeface = Typeface.FONTAWESOME
+			btnTabSalva.Text = Chr(0xF061)
+			btnTabSalva.TextSize = 34
+		Else
+			btnTabSalva.Typeface = Typeface.DEFAULT_BOLD
+			btnTabSalva.Text = "Salva"
+			btnTabSalva.TextSize = 15
+		End If
+		btnTabSalva.TextColor = Colors.White
+		btnTabSalva.Gravity = Gravity.CENTER
+		pnlFooter.BringToFront
 		NascondiGapBottoni
-		Dim slotW As Int = (100%x - margin * 2 - gap * Max(0, nVis - 1)) / Max(1, nVis)
-		Dim x As Int = margin
-
-		' Solo freccia (Clienti/Listino)
-		If nVis = 1 And SwiftButton1.IsInitialized And SwiftButton1.mBase.Visible Then
-			Dim wCta As Int = Min(slotW + 12dip, 42%x)
-			x = 100%x - margin - wCta
-			PreparaSwiftDefinito(SwiftButton1, x, topBtn, wCta, btnH, faceCta, sideCta, Chr(0xF061), "", True)
-			Return True
-		End If
-
-		If SwiftButton2.IsInitialized And SwiftButton2.mBase.Visible Then
-			PreparaSwiftDefinito(SwiftButton2, x, topBtn, slotW, btnH, faceSec, sideSec, Chr(0xF1F8), "Elimina", False)
-			x = x + slotW
-			x = x + MettiGapBianco(1, x, topBtn, gap, btnH)
-		End If
-		If SwiftButton3.IsInitialized And SwiftButton3.mBase.Visible Then
-			PreparaSwiftDefinito(SwiftButton3, x, topBtn, slotW, btnH, faceSec, sideSec, Chr(0xF12D), "Azzera", False)
-			x = x + slotW
-			x = x + MettiGapBianco(2, x, topBtn, gap, btnH)
-		End If
-		If SwiftButton1.IsInitialized And SwiftButton1.mBase.Visible Then
-			PreparaSwiftDefinito(SwiftButton1, x, topBtn, slotW, btnH, faceCta, sideCta, Chr(0xF061), "", True)
-		End If
-
-		' Sempre sopra la tabella
-		If SwiftButton2.IsInitialized Then SwiftButton2.mBase.BringToFront
-		If SwiftButton3.IsInitialized Then SwiftButton3.mBase.BringToFront
-		If SwiftButton1.IsInitialized Then SwiftButton1.mBase.BringToFront
-		If pnlGap1.IsInitialized Then pnlGap1.BringToFront
-		If pnlGap2.IsInitialized Then pnlGap2.BringToFront
 	Catch
-		Log(LastException)
+		Log("StileBottoniListaTabelle: " & LastException)
 	End Try
 	Return True
+End Sub
+
+Private Sub PreparaBottoneLista (btn As Button, testo As String, colore As Int)
+	btn.Text = testo
+	btn.TextSize = 15
+	btn.TextColor = Colors.White
+	btn.Color = colore
+	btn.Gravity = Gravity.CENTER
+	btn.Enabled = True
+End Sub
+
+Private Sub NascondiSwiftLista
+	Try
+		If SwiftButton1.IsInitialized Then
+			If SwiftButton1.mBase.IsInitialized Then SwiftButton1.mBase.Visible = False
+		End If
+		If SwiftButton2.IsInitialized Then
+			If SwiftButton2.mBase.IsInitialized Then SwiftButton2.mBase.Visible = False
+		End If
+		If SwiftButton3.IsInitialized Then
+			If SwiftButton3.mBase.IsInitialized Then SwiftButton3.mBase.Visible = False
+		End If
+	Catch
+		Log("NascondiSwiftLista: " & LastException)
+	End Try
+End Sub
+
+Sub btnTabElimina_Click
+	CallSubDelayed(Me, "SwiftButton2_Click")
+End Sub
+
+Sub btnTabAzzera_Click
+	CallSubDelayed(Me, "SwiftButton3_Click")
+End Sub
+
+Sub btnTabSalva_Click
+	CallSubDelayed(Me, "SwiftButton1_Click")
 End Sub
 
 ' Striscia bianca tra un bottone e l'altro (separazione reale).
@@ -412,88 +447,6 @@ Private Sub NascondiGapBottoni
 		If pnlGap2.IsInitialized Then pnlGap2.Visible = False
 	Catch
 		Log(LastException)
-	End Try
-End Sub
-
-Private Sub PreparaSwiftDefinito (btn As SwiftButton, left As Int, top As Int, width As Int, height As Int, _
-		face As Int, side As Int, icona As String, etichetta As String, soloIcona As Boolean)
-	Try
-		If btn.IsInitialized = False Or btn.mBase.IsInitialized = False Then Return
-		If width < 40dip Or height < 40dip Then Return
-		AssicuraBottoneSuActivity(btn, left, top, width, height)
-		btn.mBase.Color = Colors.Transparent
-		btn.SideHeight = 8dip
-		btn.CornersRadius = 10dip
-		btn.SetColors(face, side)
-		btn.Enabled = True
-		btn.mBase.Visible = True
-		btn.Update
-
-		' Area utile = solo la faccia (esclude SideHeight): così icona/testo risultano centrati
-		Dim faceH As Int = Max(36dip, btn.mBase.Height - btn.SideHeight)
-		btn.xLBL.SetLayoutAnimated(0, 0, 0, btn.mBase.Width, faceH)
-
-		Dim cs As CSBuilder
-		cs.Initialize
-		cs.Alignment("ALIGN_CENTER")
-		If soloIcona Or etichetta.Trim = "" Then
-			cs.Typeface(Typeface.FONTAWESOME).Size(36).Color(Colors.White).Append(icona).PopAll
-		Else
-			cs.Typeface(Typeface.FONTAWESOME).Size(24).Color(Colors.White).Append(icona).PopAll
-			cs.Append(CRLF)
-			cs.Typeface(Typeface.DEFAULT_BOLD).Size(14).Color(Colors.White).Append(etichetta).PopAll
-		End If
-		btn.xLBL.Text = cs
-		btn.xLBL.TextColor = Colors.White
-		btn.xLBL.SetTextAlignment("CENTER", "CENTER")
-		Dim lbl As Label = btn.xLBL
-		lbl.SingleLine = False
-		lbl.Gravity = Gravity.CENTER
-		lbl.Padding = Array As Int(2dip, 2dip, 2dip, 2dip)
-		btn.mBase.BringToFront
-	Catch
-		Log("PreparaSwiftDefinito: " & LastException)
-	End Try
-End Sub
-
-' Riposiziona senza rompere lo SwiftButton (confronto parent corretto con Activity).
-Private Sub AssicuraBottoneSuActivity (btn As SwiftButton, left As Int, top As Int, width As Int, height As Int)
-	Try
-		If btn.IsInitialized = False Or btn.mBase.IsInitialized = False Then Return
-		Dim base As B4XView = btn.mBase
-		Dim act As B4XView = Activity
-		Dim p As B4XView = base.Parent
-		If p.IsInitialized = False Then
-			Activity.AddView(base, left, top, width, height)
-		Else If p <> act Then
-			base.RemoveViewFromParent
-			Activity.AddView(base, left, top, width, height)
-		Else
-			base.SetLayoutAnimated(0, left, top, width, height)
-		End If
-		base.Visible = True
-		base.Color = Colors.Transparent
-		btn.Enabled = True
-		base.BringToFront
-		btn.Update
-	Catch
-		Log("AssicuraBottoneSuActivity: " & LastException)
-	End Try
-End Sub
-
-' Top assoluto del bottone rispetto all'Activity (per ritagliare la tabella).
-Private Sub AbsoluteTopOfView (v As B4XView) As Int
-	Try
-		Dim t As Int = v.Top
-		Dim p As B4XView = v.Parent
-		Do While p.IsInitialized
-			If p = Activity Then Return t
-			t = t + p.Top
-			p = p.Parent
-		Loop
-		Return t
-	Catch
-		Return v.Top
 	End Try
 End Sub
 
@@ -618,7 +571,6 @@ private Sub ListinoTab
 
 		Dim tableTop As Int = B4XTable1.mBase.Top
 		Dim footerTop As Int = 100%y - FooterBarH
-		If SwiftButton1.IsInitialized And SwiftButton1.mBase.IsInitialized Then footerTop = SwiftButton1.mBase.Top
 		Dim tableH As Int = Max(220dip, footerTop - tableTop - 4dip)
 		B4XTable1.mBase.Height = tableH
 

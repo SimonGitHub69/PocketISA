@@ -34,6 +34,8 @@ Sub Globals
 	Private EditText14 As EditText
 	Private EditText15 As EditText
 	Private EditText16 As EditText
+	Private pnlFooter As Panel
+	Private btnFooterSalva As Button
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
@@ -191,10 +193,56 @@ Sub Activity_Create(FirstTime As Boolean)
 	Else
 		Switch4.Checked = False
 	End If
+	StileBottoneParametri
 End Sub
 
 Sub Activity_Resume
+	StileBottoneParametri
+End Sub
 
+' Freccia blu grande, come su Clienti e Listini (terzo slot, in basso a destra).
+Private Sub StileBottoneParametri
+	Try
+		Dim margin As Int = 6dip
+		Dim gap As Int = 6dip
+		Dim barH As Int = 58dip
+		Dim topBtn As Int = 100%y - barH
+		If topBtn < 0 Then topBtn = 0
+
+		If pnlFooter.IsInitialized = False Then
+			pnlFooter.Initialize("")
+			Activity.AddView(pnlFooter, 0, topBtn, 100%x, barH)
+			btnFooterSalva.Initialize("btnFooterSalva")
+			pnlFooter.AddView(btnFooterSalva, 0, 0, 10dip, 10dip)
+		End If
+
+		pnlFooter.SetLayout(0, topBtn, 100%x, barH)
+		pnlFooter.Color = Colors.White
+		pnlFooter.Visible = True
+
+		Dim slotW As Int = (pnlFooter.Width - margin * 2 - gap * 2) / 3
+		If slotW < 40dip Then slotW = 40dip
+		btnFooterSalva.SetLayout(margin + (slotW + gap) * 2, 4dip, slotW, barH - 8dip)
+		btnFooterSalva.Typeface = Typeface.FONTAWESOME
+		btnFooterSalva.Text = Chr(0xF061)
+		btnFooterSalva.TextSize = 34
+		btnFooterSalva.TextColor = Colors.White
+		btnFooterSalva.Color = Colors.RGB(25, 118, 210)
+		btnFooterSalva.Gravity = Gravity.CENTER
+		btnFooterSalva.Enabled = True
+		btnFooterSalva.Visible = True
+		pnlFooter.BringToFront
+
+		If SwiftButton4.IsInitialized Then
+			If SwiftButton4.mBase.IsInitialized Then SwiftButton4.mBase.Visible = False
+		End If
+	Catch
+		Log("StileBottoneParametri: " & LastException)
+	End Try
+End Sub
+
+Sub btnFooterSalva_Click
+	Activity.Finish
 End Sub
 
 Sub Activity_Pause (UserClosed As Boolean)

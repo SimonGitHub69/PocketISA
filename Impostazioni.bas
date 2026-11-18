@@ -5,7 +5,7 @@ Type=Activity
 Version=9.8
 @EndOfDesignText@
 #Region  Activity Attributes 
-	#FullScreen: false
+	#FullScreen: False
 	#IncludeTitle: false
 #End Region
 
@@ -74,6 +74,16 @@ Sub Globals
 	Private ExplorerCurrentDir As String
 	Private Const IDX_DBNAME As Int = 10
 	Private Const IDX_PATH_DB As Int = 12
+	Private Const IDX_PATH_SOUNDS As Int = 13
+	Private Const IDX_SERIAL As Int = 14
+	Private pathEditSounds As Boolean
+	Private FooterBarH As Int
+	Private pnlGap1 As Panel
+	Private pnlGap2 As Panel
+	Private pnlFooter As Panel
+	Private btnFooterHelp As Button
+	Private btnFooterParam As Button
+	Private btnFooterSalva As Button
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
@@ -112,8 +122,9 @@ Sub Activity_Create(FirstTime As Boolean)
 	lblTitolo.Gravity = Gravity.CENTER
 	Activity.AddView(lblTitolo, 0dip, 0dip, 100%x, 30dip)
 
+	FooterBarH = 68dip
 	Scrollview1.Initialize(0)
-	Activity.AddView(Scrollview1, 0dip, 30dip, 100%x, 82%y)
+	Activity.AddView(Scrollview1, 0dip, 30dip, 100%x, Max(120dip, 100%y - 30dip - FooterBarH))
 
 	' Path DB da file config (non dal SQLite)
 	ExtraUtility.LoadPathDBConfig
@@ -122,6 +133,8 @@ Sub Activity_Create(FirstTime As Boolean)
 	End If
 	Dim pathDbShow As String = ExtraUtility.DirExt
 	If pathDbShow = "" And Main.PathDB <> Null Then pathDbShow = Main.PathDB
+	ExtraUtility.LoadPathSoundsConfig
+	Dim pathSoundsShow As String = ExtraUtility.GetSoundsFolder
 
 	values = Array As String( _
 		Main.IP_ServerPHP, _
@@ -137,6 +150,7 @@ Sub Activity_Create(FirstTime As Boolean)
 		Main.DBName, _
 		Main.DEBUG, _
 		pathDbShow, _
+		pathSoundsShow, _
 		Main.serialNo _
 	)
 
@@ -154,6 +168,7 @@ Sub Activity_Create(FirstTime As Boolean)
 		"Nome File (.db)", _
 		"DEBUG", _
 		"Path DB", _
+		"Path sounds", _
 		"Serial No." _
 	)
 
@@ -194,12 +209,14 @@ Sub Activity_Create(FirstTime As Boolean)
 			edt.PasswordMode = True
 			edt.Gravity = Gravity.LEFT
 		Else If labels(i) = "Serial No." Then
+			' Stessa riga degli altri campi: numero centrato, senza riquadro piu' alto
 			edt.Enabled = False
-			edt.TextColor = Colors.Gray
-			edt.Gravity = Gravity.LEFT
-			edt.SingleLine = False
-			edt.TextSize = 11
-		Else If labels(i) = "Path DB" Then
+			edt.TextColor = Colors.Black
+			edt.TextSize = 14
+			edt.Gravity = Gravity.CENTER
+			edt.SingleLine = True
+			edt.Padding = Array As Int(4dip, 0, 4dip, 0)
+		Else If labels(i) = "Path DB" Or labels(i) = "Path sounds" Then
 			' Cliccabile: apre maschera grande per editare il percorso
 			edt.Enabled = True
 			edt.TextColor = Colors.Blue
@@ -215,6 +232,138 @@ Sub Activity_Create(FirstTime As Boolean)
 	Next
 
 	CreaMascheraPathDB
+	StileBottoniImpostazioni
+End Sub
+
+' Barra in basso: Help | Parametri | Salva. Bottoni normali, non gli SwiftButton del layout.
+Private Sub StileBottoniImpostazioni
+	Try
+		Dim margin As Int = 6dip
+		Dim gap As Int = 6dip
+		Dim barH As Int = 58dip
+		Dim topBtn As Int = 100%y - barH
+		If topBtn < 0 Then topBtn = 0
+		FooterBarH = barH
+
+		If Scrollview1.IsInitialized Then
+			Dim scrollH As Int = topBtn - 30dip
+			If scrollH < 80dip Then scrollH = 80dip
+			Scrollview1.SetLayout(0dip, 30dip, 100%x, scrollH)
+		End If
+
+		If pnlFooter.IsInitialized = False Then
+			pnlFooter.Initialize("")
+			Activity.AddView(pnlFooter, 0, topBtn, 100%x, barH)
+			btnFooterHelp.Initialize("btnFooterHelp")
+			btnFooterParam.Initialize("btnFooterParam")
+			btnFooterSalva.Initialize("btnFooterSalva")
+			pnlFooter.AddView(btnFooterHelp, 0, 0, 10dip, 10dip)
+			pnlFooter.AddView(btnFooterParam, 0, 0, 10dip, 10dip)
+			pnlFooter.AddView(btnFooterSalva, 0, 0, 10dip, 10dip)
+			PreparaBottoneFooter(btnFooterHelp, "Help", Colors.RGB(69, 90, 100))
+			PreparaBottoneFooter(btnFooterParam, "Parametri", Colors.RGB(69, 90, 100))
+			PreparaBottoneFooter(btnFooterSalva, "Salva", Colors.RGB(25, 118, 210))
+		End If
+
+		pnlFooter.SetLayout(0, topBtn, 100%x, barH)
+		pnlFooter.Color = Colors.White
+		pnlFooter.Visible = True
+
+		Dim slotW As Int = (pnlFooter.Width - margin * 2 - gap * 2) / 3
+		If slotW < 40dip Then slotW = 40dip
+		Dim bh As Int = barH - 8dip
+		btnFooterHelp.SetLayout(margin, 4dip, slotW, bh)
+		btnFooterParam.SetLayout(margin + slotW + gap, 4dip, slotW, bh)
+		btnFooterSalva.SetLayout(margin + (slotW + gap) * 2, 4dip, slotW, bh)
+		btnFooterHelp.Visible = True
+		btnFooterParam.Visible = True
+		btnFooterSalva.Visible = True
+
+		NascondiSwiftLayout
+		pnlFooter.BringToFront
+
+		If pnlExplorer.IsInitialized And pnlExplorer.Visible Then
+			pnlExplorer.BringToFront
+		Else If pnlPathEdit.IsInitialized And pnlPathEdit.Visible Then
+			pnlPathEdit.BringToFront
+		End If
+		Log("Footer Impostazioni top=" & topBtn & " h=" & barH)
+	Catch
+		Log("StileBottoniImpostazioni: " & LastException)
+	End Try
+End Sub
+
+Private Sub PreparaBottoneFooter (btn As Button, testo As String, colore As Int)
+	btn.Text = testo
+	btn.TextSize = 15
+	btn.TextColor = Colors.White
+	btn.Color = colore
+	btn.Gravity = Gravity.CENTER
+	btn.Enabled = True
+	btn.Visible = True
+End Sub
+
+Private Sub NascondiSwiftLayout
+	Try
+		If SwiftButton1.IsInitialized Then
+			If SwiftButton1.mBase.IsInitialized Then SwiftButton1.mBase.Visible = False
+		End If
+		If SwiftButton2.IsInitialized Then
+			If SwiftButton2.mBase.IsInitialized Then SwiftButton2.mBase.Visible = False
+		End If
+		If SwiftButton3.IsInitialized Then
+			If SwiftButton3.mBase.IsInitialized Then SwiftButton3.mBase.Visible = False
+		End If
+	Catch
+		Log("NascondiSwiftLayout: " & LastException)
+	End Try
+End Sub
+
+Sub btnFooterHelp_Click
+	CallSubDelayed(Me, "SwiftButton2_Click")
+End Sub
+
+Sub btnFooterParam_Click
+	CallSubDelayed(Me, "SwiftButton3_Click")
+End Sub
+
+Sub btnFooterSalva_Click
+	CallSubDelayed(Me, "SwiftButton1_Click")
+End Sub
+
+Private Sub MettiGapBianco (qualegap As Int, left As Int, top As Int, gapW As Int, h As Int) As Int
+	Try
+		Dim pnl As Panel
+		If qualegap = 1 Then
+			If pnlGap1.IsInitialized = False Then
+				pnlGap1.Initialize("")
+				Activity.AddView(pnlGap1, left, top, gapW, h)
+			End If
+			pnl = pnlGap1
+		Else
+			If pnlGap2.IsInitialized = False Then
+				pnlGap2.Initialize("")
+				Activity.AddView(pnlGap2, left, top, gapW, h)
+			End If
+			pnl = pnlGap2
+		End If
+		pnl.SetLayoutAnimated(0, left, top, gapW, h)
+		pnl.Color = Colors.White
+		pnl.Visible = True
+		pnl.BringToFront
+	Catch
+		Log("MettiGapBianco: " & LastException)
+	End Try
+	Return gapW
+End Sub
+
+Private Sub NascondiGapBottoni
+	Try
+		If pnlGap1.IsInitialized Then pnlGap1.Visible = False
+		If pnlGap2.IsInitialized Then pnlGap2.Visible = False
+	Catch
+		Log(LastException)
+	End Try
 End Sub
 
 Private Sub CreaMascheraPathDB
@@ -310,8 +459,20 @@ Private Sub CreaMascheraPathDB
 End Sub
 
 Private Sub ApriMascheraPathDB
+	pathEditSounds = False
+	lblPathEditTitle.Text = "Path DB"
 	IME1.HideKeyboard
 	edtPathBig.Text = values(IDX_PATH_DB)
+	pnlExplorer.Visible = False
+	pnlPathEdit.Visible = True
+	pnlPathEdit.BringToFront
+End Sub
+
+Private Sub ApriMascheraPathSounds
+	pathEditSounds = True
+	lblPathEditTitle.Text = "Path sounds"
+	IME1.HideKeyboard
+	edtPathBig.Text = values(IDX_PATH_SOUNDS)
 	pnlExplorer.Visible = False
 	pnlPathEdit.Visible = True
 	pnlPathEdit.BringToFront
@@ -413,8 +574,16 @@ End Sub
 Private Sub ApplicaPathScelto (folder As String, dbFile As String)
 	folder = ExtraUtility.NormalizzaPathDb(folder)
 	If ExtraUtility.IsUsableDbFolder(folder) = False Then
-		MsgboxAsync("Percorso non valido. Usa Explorer oppure un path completo tipo:" & CRLF & _
-			"/storage/native-emulated/Android/data/biz.greensoft.PocketIsa/files/db", "Path DB")
+		Dim titolo As String = "Path DB"
+		If pathEditSounds Then titolo = "Path sounds"
+		MsgboxAsync("Percorso non valido. Usa Explorer oppure un path completo sotto /storage/.", titolo)
+		Return
+	End If
+	If pathEditSounds Then
+		values(IDX_PATH_SOUNDS) = folder
+		values_edt(IDX_PATH_SOUNDS).Text = folder
+		edtPathBig.Text = folder
+		ExtraUtility.SavePathSoundsConfig(folder)
 		Return
 	End If
 	values(IDX_PATH_DB) = folder
@@ -564,7 +733,7 @@ Sub lvExplorer_ItemClick (Position As Int, Value As Object)
 End Sub
 
 Sub Activity_Resume
-
+	StileBottoniImpostazioni
 End Sub
 
 Sub Activity_Pause (UserClosed As Boolean)
@@ -596,6 +765,12 @@ Sub SalvaImpostazioni As ResumableSub
 	values(IDX_PATH_DB) = Main.PathDB
 	Main.DBName = values(IDX_DBNAME).Trim
 	ExtraUtility.SavePathDBConfig(Main.PathDB, Main.DBName)
+	Dim pathSounds As String = values(IDX_PATH_SOUNDS).Trim
+	Do While pathSounds.EndsWith("/") And pathSounds.Length > 1
+		pathSounds = pathSounds.SubString2(0, pathSounds.Length - 1)
+	Loop
+	values(IDX_PATH_SOUNDS) = pathSounds
+	ExtraUtility.SavePathSoundsConfig(pathSounds)
 	' Assicura che la colonna esista sul DB effettivamente in uso
 	SQLDataAccess.Initialize(ExtraUtility.DirExt, Main.DBName, False)
 	DB_SQLite.Alter_Table_IS_IMPOSTAZIONI(SQLDataAccess)
@@ -693,6 +868,11 @@ Sub edt_FocusChanged (HasFocus As Boolean)
 			e.Enabled = True
 			ApriMascheraPathDB
 			Return
+		Else If index = IDX_PATH_SOUNDS Then
+			e.Enabled = False
+			e.Enabled = True
+			ApriMascheraPathSounds
+			Return
 		End If
 		CurrentEdit = e
 		e.Gravity = Gravity.LEFT
@@ -701,6 +881,8 @@ Sub edt_FocusChanged (HasFocus As Boolean)
 		Select index
 			Case 0, 1, 2
 				e.Gravity = Gravity.RIGHT
+			Case IDX_SERIAL
+				e.Gravity = Gravity.CENTER
 			Case Else
 				e.Gravity = Gravity.LEFT
 		End Select
@@ -712,6 +894,8 @@ Sub edt_Click
 	Dim index As Int = e.Tag
 	If index = IDX_PATH_DB Then
 		ApriMascheraPathDB
+	Else If index = IDX_PATH_SOUNDS Then
+		ApriMascheraPathSounds
 	End If
 End Sub
 

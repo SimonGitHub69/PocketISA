@@ -86,7 +86,7 @@ Sub Activity_Create(FirstTime As Boolean)
 			mSoundPool.Initialize(2)
 		End If
 	End If
-	Dim soundDir As String = ExtraUtility.rp.GetSafeDirDefaultExternal("sounds")
+	Dim soundDir As String = ExtraUtility.GetSoundsFolder
 	mMySoundLoadID1 = mSoundPool.Load(soundDir, "Sound1.wav")
 	mMySoundLoadID2 = mSoundPool.Load(soundDir, "Sound2.wav")
 	mMySoundLoadID3 = mSoundPool.Load(soundDir, "Sound3.wav")
@@ -121,7 +121,17 @@ Sub Activity_Create(FirstTime As Boolean)
 End Sub
 
 Sub Activity_Resume
-	' Log(Activity.GetStartingIntent)
+	' Ricarica i wav se Path sounds e' stato cambiato in Impostazioni
+	If mSoundPool.IsInitialized Then
+		Dim soundDir As String = ExtraUtility.GetSoundsFolder
+		mMySoundLoadID1 = mSoundPool.Load(soundDir, "Sound1.wav")
+		mMySoundLoadID2 = mSoundPool.Load(soundDir, "Sound2.wav")
+		mMySoundLoadID3 = mSoundPool.Load(soundDir, "Sound3.wav")
+		mMySoundLoadID4 = mSoundPool.Load(soundDir, "error.wav")
+		mMySoundLoadID5 = mSoundPool.Load(soundDir, "ok.wav")
+		mMySoundLoadID6 = mSoundPool.Load(soundDir, "voiceok.wav")
+		mMySoundLoadID7 = mSoundPool.Load(soundDir, "button.wav")
+	End If
 End Sub
 
 Sub Activity_Pause (UserClosed As Boolean)
