@@ -1,0 +1,652 @@
+﻿Build1=Default,biz.greensoft.PocketIsa
+File1=1_230_1.jpg
+File10=Carbon.png
+File11=Cash.bal
+File12=CheckRef_Kuore.bal
+File13=cop.db
+File14=error.wav
+File15=Esseci.db
+File16=florenzi.db
+File17=Gefin.db
+File18=Gefin.png
+File19=GS_Login.bal
+File2=abelia-1.jpg
+File20=images.jpg
+File21=images2.jpg
+File22=Impostazioni.bal
+File23=Impostazioni2.bal
+File24=index.jpg
+File25=kuore.db
+File26=ListaDoc.bal
+File27=ListaDocTablet.bal
+File28=ListaTab.bal
+File29=ListaTempi_Carbon.bal
+File3=Autoclave_ins.bal
+File30=ListaTempi_Gefin.bal
+File31=ListiniArticoli.bal
+File32=login.bal
+File33=Menu_Carbon.bal
+File34=Menu_Esseci.bal
+File35=menu_florenzi.bal
+File36=Menu_Gefin.bal
+File37=Menu_Kuore.bal
+File38=Menu_Nesti.bal
+File39=Menu_Trendy.bal
+File4=Autoclave_reg.bal
+File40=Menu_ZelariVi.bal
+File41=nesti.db
+File42=NewDocument_Esseci.bal
+File43=NewDocument_Florenzi.bal
+File44=NewDocument_Gefin.bal
+File45=NewDocument_Trendy.bal
+File46=NewDocument_ZelariVi.bal
+File47=Note_Ins.bal
+File48=ok.wav
+File49=page1_kuore.bal
+File5=Autoclavi.bal
+File50=page1_kuore_spunta.bal
+File51=page2_kuore.bal
+File52=page2_kuore_spunta.bal
+File53=page3_kuore_spunta.bal
+File54=Picking.bal
+File55=PickingNew.bal
+File56=Ricerca_AZ.bal
+File57=Ricerca_AZ_mini.bal
+File58=Ricerca_AZ09.bal
+File59=Ricette.bal
+File6=B4X_FontAwesome.otf
+File60=RigaDettaglio.bal
+File61=righedoc_Esseci.bal
+File62=righedoc_Florenzi.bal
+File63=righedoc_Gefin.bal
+File64=righedoc_kuore.bal
+File65=righedoc_Trendy.bal
+File66=righedoc_ZelariVi.bal
+File67=Semaphore0.png
+File68=semaphore0_corsia.png
+File69=Semaphore1.png
+File7=B4X_MaterialIcons.ttf
+File70=semaphore1_corsia.png
+File71=Semaphore2.png
+File72=Semaphore3.png
+File73=semaphore3_corsia.png
+File74=Semaphore4.png
+File75=Signature.bal
+File76=sound1.wav
+File77=sound2.wav
+File78=sound3.wav
+File79=testedoc_kuore.bal
+File8=button.wav
+File80=testedoc_kuore_spunta.bal
+File81=trendy.db
+File82=VerificaPrezzo.bal
+File83=voiceOK.wav
+File84=zelari.db
+File9=Carbon.db
+FileGroup1=Default Group\Images
+FileGroup10=Default Group\Logos
+FileGroup11=Default Group\Forms\Nesti
+FileGroup12=Default Group\Forms\Kuore
+FileGroup13=Default Group\DB
+FileGroup14=Default Group\Sounds
+FileGroup15=Default Group\DB
+FileGroup16=Default Group\DB
+FileGroup17=Default Group\DB
+FileGroup18=Default Group\Logos
+FileGroup19=Default Group\Forms\General
+FileGroup2=Default Group\Images
+FileGroup20=Default Group\Images
+FileGroup21=Default Group\Images
+FileGroup22=Default Group\Forms\General
+FileGroup23=Default Group\Forms\General
+FileGroup24=Default Group\Images
+FileGroup25=Default Group\DB
+FileGroup26=Default Group\Forms\General
+FileGroup27=Default Group\Forms\General
+FileGroup28=Default Group\Forms\General
+FileGroup29=Default Group\Forms\Carbon
+FileGroup3=Default Group\Forms\Carbon
+FileGroup30=Default Group\Forms\Gefin
+FileGroup31=Default Group\Forms\General
+FileGroup32=Default Group\Forms\General
+FileGroup33=Default Group\Forms\Carbon
+FileGroup34=Default Group\Forms\Esseci
+FileGroup35=Default Group\Forms\Florenzi
+FileGroup36=Default Group\Forms\Gefin
+FileGroup37=Default Group\Forms\Kuore
+FileGroup38=Default Group\Forms\Nesti
+FileGroup39=Default Group\Forms\Trendy
+FileGroup4=Default Group\Forms\Carbon
+FileGroup40=Default Group\Forms\Zelari
+FileGroup41=Default Group\DB
+FileGroup42=Default Group\Forms\Esseci
+FileGroup43=Default Group\Forms\Florenzi
+FileGroup44=Default Group\Forms\Gefin
+FileGroup45=Default Group\Forms\Trendy
+FileGroup46=Default Group\Forms\Zelari
+FileGroup47=Default Group\Forms\Carbon
+FileGroup48=Default Group\Sounds
+FileGroup49=Default Group\Forms\Kuore
+FileGroup5=Default Group\Forms\Carbon
+FileGroup50=Default Group\Forms\Kuore
+FileGroup51=Default Group\Forms\Kuore
+FileGroup52=Default Group\Forms\Kuore
+FileGroup53=Default Group\Forms\Kuore
+FileGroup54=Default Group\Forms\Nesti
+FileGroup55=Default Group\Forms\Nesti
+FileGroup56=Default Group\Forms\General
+FileGroup57=Default Group\Forms\General
+FileGroup58=Default Group\Forms\General
+FileGroup59=Default Group\Forms\Carbon
+FileGroup6=Default Group\Fonts
+FileGroup60=Default Group\Forms\General
+FileGroup61=Default Group\Forms\Esseci
+FileGroup62=Default Group\Forms\Florenzi
+FileGroup63=Default Group\Forms\Gefin
+FileGroup64=Default Group\Forms\Kuore
+FileGroup65=Default Group\Forms\Trendy
+FileGroup66=Default Group\Forms\Zelari
+FileGroup67=Default Group\Icons
+FileGroup68=Default Group\Icons
+FileGroup69=Default Group\Icons
+FileGroup7=Default Group\Fonts
+FileGroup70=Default Group\Icons
+FileGroup71=Default Group\Icons
+FileGroup72=Default Group\Icons
+FileGroup73=Default Group\Icons
+FileGroup74=Default Group\Icons
+FileGroup75=Default Group\Forms\Carbon
+FileGroup76=Default Group\Sounds
+FileGroup77=Default Group\Sounds
+FileGroup78=Default Group\Sounds
+FileGroup79=Default Group\Forms\Kuore
+FileGroup8=Default Group\Sounds
+FileGroup80=Default Group\Forms\Kuore
+FileGroup81=Default Group\DB
+FileGroup82=Default Group\Forms\General
+FileGroup83=Default Group\Sounds
+FileGroup84=Default Group\DB
+FileGroup9=Default Group\DB
+Group=Default Group\General
+Library1=audio
+Library10=encryption
+Library11=externalstorage
+Library12=ime
+Library13=maskededittext
+Library14=mlwifi
+Library15=net
+Library16=okhttputils2
+Library17=phone
+Library18=randomaccessfile
+Library19=reflection
+Library2=b4amlistview
+Library20=runtimepermissions
+Library21=serial
+Library22=sql
+Library23=tabstripviewpager
+Library24=viewsex
+Library25=xui
+Library26=xui views
+Library27=zoomimageview
+Library28=dialogs2
+Library3=b4xcollections
+Library4=b4xpreferencesdialog
+Library5=b4xtable
+Library6=core
+Library7=datalogicsdk
+Library8=dbutils
+Library9=dialogs
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="25" android:targetSdkVersion="29" />~\n~<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="29" />~\n~<supports-screens~\n~    android:largeScreens="true"~\n~    android:normalScreens="true"~\n~    android:smallScreens="true"~\n~    android:anyDensity="true"/>~\n~)~\n~~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.LightTheme)~\n~AddPermission(android.permission.CALL_PHONE)~\n~SetApplicationAttribute(android:largeHeap, "true")~\n~~\n~' Aggiunta per Android 10 (comunicazione network HTTP)~\n~CreateResourceFromFile(Macro, Core.NetworkClearText)~\n~~\n~#DebuggerForceStandardAssets: true~\n~~\n~AddActivityText(Main,~\n~<intent-filter>~\n~    <action android:name="com.datalogic.decodewedge.decode_action" />~\n~    <category android:name="com.datalogic.decodewedge.decode_category" />~\n~</intent-filter>~\n~)~\n~~\n~'End of default text.
+Module1=Autoclave_Ins
+Module10=Cls_MD5
+Module11=clsDialogGS
+Module12=ClsScanHelper
+Module13=ClsScanLogic
+Module14=CSVParser
+Module15=DB_SQLite
+Module16=DB_SQLSERVER
+Module17=DBPhp
+Module18=DBUtilsExtra
+Module19=ExtraUtility
+Module2=Autoclave_Reg
+Module20=GS_Login
+Module21=Impostazioni
+Module22=Impostazioni2
+Module23=InlineEditing
+Module24=ListaDoc
+Module25=ListaDocTablet
+Module26=ListaTab
+Module27=ListaTempi_Carbon
+Module28=ListaTempi_Gefin
+Module29=ListiniArticoli
+Module3=Autoclavi
+Module30=Login
+Module31=NewDocument
+Module32=Note_Ins
+Module33=Picking
+Module34=PickingNew
+Module35=Ricerca_AZ
+Module36=Ricerca_AZ_mini
+Module37=Ricerca_AZ09
+Module38=Ricette
+Module39=RigaDettaglio
+Module4=B4XComboClick
+Module40=RigheDoc_Esseci
+Module41=RigheDoc_Florenzi
+Module42=RigheDoc_Gefin
+Module43=RigheDoc_Trendy
+Module44=RigheDoc_ZelariVi
+Module45=ServiceScan
+Module46=Signature
+Module47=SignatureCapture
+Module48=Starter
+Module49=TesteDoc_Kuore
+Module5=B4XTableSelections
+Module50=TesteDoc_Kuore_Spunta
+Module51=VerificaPrezzo
+Module6=CallSubUtils
+Module7=Cash
+Module8=CheckRef_Kuore
+Module9=Choose_Menu
+NumberOfFiles=84
+NumberOfLibraries=28
+NumberOfModules=51
+Version=14.2
+@EndOfDesignText@
+#Region  Project Attributes 
+	#ApplicationLabel: Pocket ISA
+	#VersionCode: 3
+	#VersionName: 
+	'SupportedOrientations possible values: unspecified, landscape = orizzontale or portrait = verticale.
+    #SupportedOrientations: portrait
+	'#SupportedOrientations: landscape
+	'#SupportedOrientations: unspecified
+	#CanInstallToExternalStorage: False
+	#Add #BridgeLogger: True
+	'#IgnoreWarnings: 16
+#End Region
+ 
+ #Region "Bibliothèques additionnelles."
+	#AdditionalJar: Datalogic.jar
+	#BridgeLogger: false
+#End Region
+
+#Region  Activity Attributes 	
+	#FullScreen: False
+	#IncludeTitle: false
+#End Region
+
+#AdditionalJar: androidx.legacy:legacy-support-core-utils
+
+Sub Process_Globals
+	'These global variables will be declared once when the application starts.
+	'These variables can be accessed from all modules.
+	' ----------------------------------------------------------------------------------------------
+	' ----------------------------------------------------------------------------------------------
+	' Public Ditta As String = "Carbon"  ' *************** CAMBIARE QUI LA DITTA *********************
+	Public Ditta As String = "ZelariVi"  ' *************** CAMBIARE QUI LA DITTA *********************
+	' ----------------------------------------------------------------------------------------------
+	' ----------------------------------------------------------------------------------------------
+	Public SelectionColor_Cyan As Int = 0xFF009DFF 	  ' cyan   FF009DFF
+	Public SelectionColor_Green As Int = 0xFF11D504   ' verde  FF11D504
+	Public SelectionColor_Red As Int = 0xFFFF3420 	  ' rosso  FFFF3420
+	Public SelectionColor_Yellow As Int = 0xFFFFFF20  ' giallo FFFFFF20
+	Public SelectionColor_Pink As Int = 0xFFF0B0FD    ' Rosa   FFFFFF20
+	Public DittaScelta As String
+	Private rp As RuntimePermissions
+	Private SQLDataAccess As SQL
+	' --- versione programma -------
+	Dim VersioneSW As String = "1.2.96"
+	Dim Utente As String = ""   ' "s.sogni"
+	Dim IP_ServerSQL As String  
+	Dim Istanza_ServerSQL As String
+	Dim DBName As String = ""
+	Dim DBName_ServerSQL As String 
+	Dim User_ServerSQL As String
+	Dim PrefixSQL As String = ""	
+	Dim MessageBoxText As String = ""
+	Dim MessageNomeDitta As String = ""
+	Dim Pwd_ServerSQL As String
+	Dim Pwd_DBName As String	
+	Dim IP_ServerPHP As String
+	Dim Folder_Php As String = "pocket_isa"
+	Dim	PortaPHP As String	
+	Dim RowID_Impostazioni As Int
+	Dim DEBUG As Int
+	Dim AltRiga As String
+	Dim LargDescRiga As String
+	Dim serialNo As String 
+	Dim SwitchRepeatAdd As Int
+	Dim SwitchImages As Int
+	Dim SwitchQtaDefault As Int
+	Dim SwitchMode_SPP As Int
+	Dim PathImages As String
+	Dim PathDB As String
+	Dim NRListinoMin As Int
+	Dim TimeOut As Int = 600000  ' Aggiunto un timeout di 10 minuti
+	Dim mSoundPool As SoundPool
+	Public Device_ScreenX As Double
+	Public Device_ScreenY As Double
+	Public Device_Density As Double
+	Public Device_ScreenXdip As Double
+	Public Device_ScreenYdip As Double
+	Public Device_Orientation As String
+End Sub
+
+Sub Globals
+	'These global variables will be redeclared each time the activity is created.
+	'These variables can only be accessed from this module.
+	'Private Dialog As B4XDialog
+	Dim ph As Phone
+	Dim Lista_Ditte() As String
+	Dim Lista_DBname() As String
+	Private lstItems_Ditte As List 'global
+	Private lstItems_Utenti As List 'global
+	Private ComboBoxDitte As B4XComboBox
+	Private Label1 As Label
+	Private B4XFloatTextField_Pwd As B4XFloatTextField
+	Private ComboBoxUtenti As B4XComboBox
+	Private B4XImageView1 As B4XImageView
+	' Private MyFont As Typeface
+	' Private ph As Phone
+End Sub
+
+private Sub Leggi_Impostazioni
+	' IP_SERVERPHP	PORTAPHP	IP_SERVERSQL	DITTA	UTENTE	VERSIONESW	ISTANZA_SERVERSQL	DBNAME_SERVERSQL	USER_SERVERSQL	PWD_SERVERSQL	DBNAME_PALMARE
+	Dim rs As ResultSet 
+	' VERIFICA SU TABELLA IMPOSTAZIONI
+	DB_SQLite.Alter_Table_IS_IMPOSTAZIONI(SQLDataAccess)
+	rs = SQLDataAccess.ExecQuery("select IP_SERVERPHP,PORTAPHP,IP_SERVERSQL,DITTA,UTENTE,ISTANZA_SERVERSQL,DBNAME_SERVERSQL,USER_SERVERSQL," _
+	& "Pwd_ServerSQL,DBNAME_PALMARE,PWD_PALMARE,DEBUG,AltRiga,Mode_SPP,Path_Images,Path_DB from IMPOSTAZIONI")
+	If (rs.RowCount=0) Then
+		MsgboxAsync("Impostazioni non configurate!","SETTINGS")
+		Dim sqlstr As String 
+		sqlstr = "INSERT INTO IMPOSTAZIONI (IP_SERVERPHP,PortaPHP,IP_ServerSQL,Ditta,Utente,Istanza_ServerSQL," _ 
+		 & "DBName_ServerSQL,User_ServerSQL,Pwd_ServerSQL,DBNAME_PALMARE,PWD_PALMARE,DEBUG,AltRiga,Mode_SPP,Path_Images) " _
+		 & "VALUES ('','','','ZelariVi','Palmare','','VIVAIZELA','trm1','terminale','" & DBName & "','p','0',21,0,'')"
+		SQLDataAccess.ExecNonQuery(sqlstr)
+		Sleep(0)
+	End If
+	rs.Close
+	rs = SQLDataAccess.ExecQuery("select rowid,IP_SERVERPHP,PORTAPHP,IP_SERVERSQL,DITTA,UTENTE,ISTANZA_SERVERSQL,DBNAME_SERVERSQL," _
+	& "User_ServerSQL,Pwd_ServerSQL,DBNAME_PALMARE,PWD_PALMARE,DEBUG,REPEAT_ADD,IMAGES,QTA_DEFAULT,AltRiga,LargDescRiga,Mode_SPP,Path_images,Path_DB from IMPOSTAZIONI")
+	Do While rs.NextRow
+		IP_ServerPHP = rs.GetString("IP_SERVERPHP")
+		PortaPHP = rs.GetString("PORTAPHP")
+		IP_ServerSQL =rs.GetString("IP_SERVERSQL")
+		' Ditta = rs.GetString("DITTA")
+		Utente = rs.GetString("UTENTE")
+		Istanza_ServerSQL = rs.GetString("ISTANZA_SERVERSQL")
+		DBName_ServerSQL = rs.GetString("DBNAME_SERVERSQL")
+		User_ServerSQL = rs.GetString("USER_SERVERSQL")
+		Pwd_ServerSQL = rs.GetString("PWD_SERVERSQL")
+		' DBName = rs.GetString("DBNAME_PALMARE")
+		Pwd_DBName = rs.GetString("PWD_PALMARE")
+		RowID_Impostazioni = rs.GetInt("rowid")
+		DEBUG = rs.Getint("DEBUG")
+		SwitchRepeatAdd = rs.GetInt("REPEAT_ADD")
+		SwitchImages = rs.GetInt("IMAGES")
+		SwitchQtaDefault = rs.GetInt("QTA_DEFAULT")
+		AltRiga = rs.GetInt("AltRiga")
+		LargDescRiga = rs.GetInt("LargDescRiga")
+		SwitchMode_SPP = rs.GetInt("Mode_SPP")	
+		PathImages = rs.GetString("Path_Images")
+		Dim pathDbSql As String = rs.GetString("Path_DB")
+		' Path DB: fonte primaria = pocketisa_pathdb.txt (gia' in PathDB/DirExt).
+		' Path_DB in SQLite e' solo mirror; non deve sovrascrivere il config.
+		Dim configPath As String = ""
+		If PathDB <> Null Then configPath = PathDB.Trim
+		If configPath <> "" Then
+			ExtraUtility.DirExt = configPath
+			' Import una tantum: se SQL e' vuoto/diverso, verra' riallineato dopo
+		Else If pathDbSql <> Null And pathDbSql.Trim <> "" Then
+			' Nessun config ancora: importa da SQLite e crea il file
+			PathDB = pathDbSql.Trim
+			ExtraUtility.DirExt = PathDB
+			ExtraUtility.SavePathDBConfig(PathDB, DBName)
+		End If
+	Loop
+	rs.Close
+	' Allinea il mirror SQLite al config (senza usarlo per decidere dove aprire)
+	ExtraUtility.SyncPathDbMirrorToSqlite(SQLDataAccess, PathDB, DBName, RowID_Impostazioni)
+End Sub
+
+Sub Activity_Create(FirstTime As Boolean)
+	If (FirstTime) Then
+		' ---------------------------------------------------------------------------------------
+		' ---- SETTAGIO MULTI-DITTA ----
+		' ---------------------------------------------------------------------------------------
+		' Legge le informazioni dello schermo X e Y riportato a in dip...
+		' ---------------------------------------------------------------------------------------		
+		'DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+		'float ScrDensity = metrics.density;
+		'int metricHeight = metrics.heightPixels;//
+		'int metricWidth = metrics.widthPixels;//		
+		Dim r As Reflector
+		r.Target = r.GetContext
+		r.Target = r.RunMethod("getResources")
+		r.Target = r.RunMethod("getDisplayMetrics")
+		Device_ScreenXdip = r.GetField("xdpi")
+		Device_ScreenYdip = r.GetField("ydpi")
+		Device_Density = r.GetField("density")
+		Device_ScreenX = r.GetField("widthPixels")
+		Device_ScreenY = r.GetField("heightPixels")
+		If Activity.Height > Activity.Width Then
+			Device_Orientation = "portrait"
+		Else
+			Device_Orientation = "landscape"
+		End If
+		If(Ditta="Florenzi") Then
+			Starter.UsaIntentScanner=True
+		Else
+			Starter.UsaIntentScanner=False
+		End If
+		If(Ditta="Nesti") Then
+			'ph.SetScreenOrientation(0) ' -1 for unspesified, 0 for landscape and 1 for portrait
+			If(Device_ScreenX>1900) And (Device_Orientation="landscape") Then
+				ph.SetScreenOrientation(0) ' -1 for unspesified, 0 for landscape and 1 for portrait
+			Else
+				ph.SetScreenOrientation(1) ' -1 for unspesified, 0 for landscape and 1 for portrait
+			End If
+		Else
+			ph.SetScreenOrientation(1) ' -1 for unspesified, 0 for landscape and 1 for portrait
+		End If
+		' ----------------------------------------------------------------------------------------
+		Select Ditta
+			Case "DEMO"
+				'  *********** Inizio Settaggio multi-ditta *************
+				Lista_Ditte = Array As String ("ZelariVi","Esseci","Nesti")    	' Zelarivi, Esseci.db
+				Lista_DBname = Array As String ("Zelari.db","Esseci.db","Nesti.db")   ' Zelari.db, Esseci.db, Nesti.db
+				'  *********** Fine Settaggio multi-ditta ***************
+			
+			Case "ZelariVi"
+				'  *********** Inizio Settaggio ZelariVi *************
+				Lista_Ditte = Array As String ("ZelariVi")      ' ZelariVi
+				Lista_DBname = Array As String ("Zelari.db")    ' Zelari.db
+				'  *********** Fine Settaggio ZelariVi ***************
+			
+			Case "Esseci"
+				'  *********** Inizio Settaggio Esseci *************
+				Lista_Ditte = Array As String ("Esseci")    	' Esseci
+				Lista_DBname = Array As String ("Esseci.db")   	' Esseci.db
+				'  *********** Fine Settaggio Esseci ***************
+			
+			Case "Kuore"
+				'  *********** Inizio Settaggio Kuore *************
+				Lista_Ditte = Array As String ("Kuore")    		' Kuore
+				Lista_DBname = Array As String ("Kuore.db")   	' Kuore.db
+				'  *********** Fine Settaggio Kuore ***************
+			
+			Case "Trendy"
+				'  *********** Inizio Settaggio Trendy *************
+				' Lista_Ditte = Array As String ("Trendy")    	 		' Trendy
+				' Lista_DBname = Array As String ("Trendy.db")   		' Trendy.db
+				' Lista_Ditte = Array As String ("COP")    		 		' COP
+				' Lista_DBname = Array As String ("COP.db")   	 		' COP.db
+				Lista_Ditte = Array As String ("COP","Trendy")  		' COP, Trendy
+				Lista_DBname = Array As String ("COP.db","Trendy.db")   ' COP.db, Trendy.db
+				'  *********** Fine Settaggio Trendy ***************
+
+			Case "Nesti"
+				'  *********** Inizio Settaggio Nesti *************
+				Lista_Ditte = Array As String ("Nesti")    		' Nesti
+				Lista_DBname = Array As String ("Nesti.db")   	' Nesti.db
+				'  *********** Fine Settaggio Nesti ***************
+				
+			Case "Carbon"
+				'  *********** Inizio Settaggio Carbon *************
+				Lista_Ditte = Array As String ("Carbon")    	' Carbon
+				Lista_DBname = Array As String ("Carbon.db")   	' Carbon.db
+				'  *********** Fine Settaggio Carbon ***************
+				
+			Case "Gefin"
+				'  *********** Inizio Settaggio Carbon *************
+				Lista_Ditte = Array As String ("Gefin")    	' Carbon
+				Lista_DBname = Array As String ("Gefin.db")   	' Carbon.db
+				'  *********** Fine Settaggio Carbon ***************
+				
+			Case "Florenzi"
+				'  *********** Inizio Settaggio Carbon *************
+				Lista_Ditte = Array As String ("Florenzi")    	' Carbon
+				Lista_DBname = Array As String ("Florenzi.db")   	' Carbon.db
+				'  *********** Fine Settaggio Carbon ***************
+				
+		End Select
+		DateTime.DateFormat = "dd-MM-yyyy"
+	End If
+	' Permesso necessario per leggere/scrivere /storage/emulated/0/db sulla SD
+	rp.CheckAndRequest(rp.PERMISSION_WRITE_EXTERNAL_STORAGE)
+	Wait For Activity_PermissionResult (Permission As String, Result As Boolean)
+	If Result = False Then
+		MsgboxAsync("Serve il permesso di accesso alla memoria per usare il database sulla SD.","PERMESSO")
+	End If
+	Activity.RemoveAllViews
+	If (Ditta = "Carbon") Or (Ditta="Gefin") Or (Ditta="Florenzi") Then
+		Activity.LoadLayout("GS_Login")
+	Else
+		Activity.LoadLayout("Login")
+	End If
+	Sleep(0)
+	lstItems_Ditte.Initialize2(Lista_Ditte)
+	lstItems_Utenti.Initialize2(Array As String(""))	
+	' Log(lstIDs.get(2))
+	' Base = Activity
+	' Dialog.Initialize (Base)
+	' Dialog.Title = "by Green Soft"
+	' Activity.Title="POCKET ISA (" & VersioneSW & ")"
+	lstItems_Ditte.Initialize2(Lista_Ditte)
+	ComboBoxDitte.SetItems(lstItems_Ditte)
+	DBName = Lista_DBname(ComboBoxDitte.SelectedIndex)
+	' Path DB: PRIMA il file config (DirInternal), poi si apre il SQLite su quel path.
+	' Mai il contrario: Path_DB dentro SQLite non puo' indicare dove sta il DB stesso.
+	ExtraUtility.LoadPathDBConfig
+	If DBName = "" Then DBName = Lista_DBname(ComboBoxDitte.SelectedIndex)
+	ExtraUtility.CopyDBIfNeeded(DBName)
+	SQLDataAccess.Initialize(ExtraUtility.DirExt, DBName, False)
+	Leggi_Impostazioni
+	lstItems_Utenti.Initialize2(Array As String(Utente))
+	ComboBoxUtenti.SetItems(lstItems_Utenti)
+	If (Ditta = "Carbon") Or (Ditta="Gefin") Or (Ditta="Florenzi") Then
+		Dim FileName As String = Ditta & ".png"
+		ExtraUtility.CopyIfNeeded(FileName,"logos")
+		B4XImageView1.Load(ExtraUtility.rp.GetSafeDirDefaultExternal("logos"), FileName)
+	End If
+	If(Ditta="Florenzi") Then
+		serialNo = ExtraUtility.GetAndroidID()
+	Else
+		serialNo = ExtraUtility.GetManufacturerSerialNumber()
+	End If
+	Starter.SerialNumber = serialNo
+	Log ("S/N: " & Starter.SerialNumber)
+End Sub
+
+' Il risultato del permesso e' gestito con Wait For Activity_PermissionResult in Activity_Create.
+' Non implementare Sub Activity_PermissionResult: intercetta l'evento e blocca il Wait For.
+
+
+
+Sub Activity_Resume
+	' vado a leggere il numero del listino minimo
+	
+End Sub
+
+Sub Activity_Pause (UserClosed As Boolean)
+
+End Sub
+
+Sub ComboBoxDitte_SelectedIndexChanged (Index As Int)
+	'Dialog.Show($"Selected item: ${ComboBoxDitte.GetItem(Index)}"$, "OK", "", "")
+	DBName = Lista_DBname(ComboBoxDitte.SelectedIndex)
+	ExtraUtility.CopyDBIfNeeded(DBName)
+	SQLDataAccess.Initialize(ExtraUtility.DirExt, DBName, False)
+	' MsgboxAsync(serialNo, "Your Serial Number")
+	Leggi_Impostazioni
+	lstItems_Utenti.Initialize2(Array As String(Utente))
+	ComboBoxUtenti.SetItems(lstItems_Utenti)
+End Sub
+
+Sub B4XFloatTextField_Pwd_EnterPressed
+	Dim stringa As String
+	stringa = B4XFloatTextField_Pwd.TextField.Text
+	If (stringa = Pwd_DBName) Then
+		Select Ditta
+			Case "ZelariVi"			
+	    		NRListinoMin = DB_SQLite.Leggi_NRListinoMinimo(SQLDataAccess)
+			Case Else
+				NRListinoMin = 0
+		End Select
+		DittaScelta = ComboBoxDitte.GetItem(ComboBoxDitte.SelectedIndex)		
+		If( DittaScelta = "COP") Then
+			Ditta = "Trendy" ' come prsonalizzazione Trendy e COP sono identiche
+		Else
+			Ditta = DittaScelta
+		End If
+		If(Ditta="Florenzi") Then
+			serialNo = ExtraUtility.GetAndroidID
+		Else
+			serialNo = ExtraUtility.GetManufacturerSerialNumber
+		End If
+		' ---------------------------------------------------------------------------------------
+		Select Ditta
+			Case "Florenzi"
+				' GS = Green Soft
+				PrefixSQL = "GS"
+				MessageBoxText = "DATI"
+				MessageNomeDitta = "Green Soft"
+				
+			Case "Trendy"
+				' GS = Green Soft
+				PrefixSQL = "GS"
+				MessageBoxText = "DATI"
+				MessageNomeDitta = "Green Soft"
+				
+			Case "Carbon"
+				' GS = Green Soft
+				PrefixSQL = "GS"
+				MessageBoxText = "DATI"
+				MessageNomeDitta = "Green Soft"
+				
+			Case "Gefin"
+				' GS = Green Soft
+				PrefixSQL = "GS"
+				MessageBoxText = "DATI"
+				MessageNomeDitta = "Green Soft"
+								
+			Case Else
+				' IS = Idea Sistemi
+				PrefixSQL = "IS"
+				MessageBoxText = "DATI"
+				MessageNomeDitta = "Green Soft"
+				
+		End Select
+		' ---------------------------------------------------------------------------------------
+		StartActivity(Choose_Menu)
+		Activity.Finish
+	Else		
+		MsgboxAsync("Password errata!","ATTENZIONE")
+	End If
+End Sub
+
+Sub ComboBoxUtenti_SelectedIndexChanged (Index As Int)
+	
+End Sub

@@ -1,0 +1,23 @@
+# B4A build / IDE
+Objects/
+AutoBackups/
+*.meta
+*.zip
+*.apk
+*.aab
+*.map
+*.dex
+
+# Local / temp
+*.log
+*.tmp
+*_strings.txt
+.DS_Store
+Thumbs.db
+
+# Secrets / local config
+*.keystore
+*.jks
+.env
+.env.*
+credentials.json
