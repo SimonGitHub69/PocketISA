@@ -58,6 +58,8 @@ Sub Activity_Create(FirstTime As Boolean)
 		SQLDataAccess.Initialize(ExtraUtility.DirExt, Main.DBName, False)
 	End If
 	Activity.LoadLayout("ListaDocTablet")
+	' Colonna Data: anno a 2 cifre (B4XTable usa DateTime.DateFormat)
+	DateTime.DateFormat = "dd/MM/yy"
 	Select Choose_Menu.vOperazioneMenu 
 		Case "Carico Ordine Fornitore"
 			ListaDocChk("F")
@@ -94,6 +96,7 @@ Sub Activity_Create(FirstTime As Boolean)
 End Sub
 
 Sub Activity_Resume
+	DateTime.DateFormat = "dd/MM/yy"
 	Sleep(1000)
 	ListaDocChkNew
 End Sub
@@ -246,7 +249,7 @@ private Sub ListaDocChkNew
 				rowx(0) = "" ' CHECKBOX
 				rowx(1) = rs.GetString("TipoDoc")
 				rowx(2) = rs.getint("Numerodoc")
-				rowx(3) = ExtraUtility.ConvertDataStrToLong(rs.GetString("Datadoc"),"dd/MM/yyyy","ITX")  ' Simone
+				rowx(3) = ExtraUtility.ConvertDataStrToLong(rs.GetString("Datadoc"),"dd/MM/yy","ITX")  ' Simone
 				rowx(4) = rs.GetString("CodClifor")
 				rowx(5) = rs.GetString("RagSoc")
 				rowx(6) = rs.Getint("Trasmesso")
@@ -260,7 +263,7 @@ private Sub ListaDocChkNew
 				rowx(0) = "" ' CHECKBOX
 				rowx(1) = rs.GetString("TipoDoc")
 				rowx(2) = rs.getint("Numerodoc")
-				rowx(3) = ExtraUtility.ConvertDataStrToLong(rs.GetString("Datadoc"),"dd/MM/yyyy","ITX")  ' Simone
+				rowx(3) = ExtraUtility.ConvertDataStrToLong(rs.GetString("Datadoc"),"dd/MM/yy","ITX")  ' Simone
 				rowx(4) = rs.GetString("CodClifor")
 				rowx(5) = rs.GetString("RagSoc")
 				rowx(6) = rs.Getint("Trasmesso")
@@ -338,7 +341,7 @@ private Sub ListaDocChk_PalmDevice(xTipoCliFor As String)
 			rowx(0) = "" ' CHECKBOX
 			rowx(1) = rs.GetString("TipoDoc")
 			rowx(2) = rs.getint("Numerodoc")
-			rowx(3) = ExtraUtility.ConvertDataStrToLong(rs.GetString("Datadoc"),"dd/MM/yyyy","ITX")  ' Simone
+			rowx(3) = ExtraUtility.ConvertDataStrToLong(rs.GetString("Datadoc"),"dd/MM/yy","ITX")  ' Simone
 			rowx(4) = rs.GetString("CodClifor")
 			rowx(5) = rs.GetString("RagSoc")
 			rowx(6) = rs.Getint("Trasmesso")
@@ -438,7 +441,7 @@ private Sub ListaDocChk(xTipoCliFor As String)
 				rowx(0) = "" ' CHECKBOX
 				rowx(1) = rs.GetString("TipoDoc")
 				rowx(2) = rs.getint("Numerodoc")
-				rowx(3) = ExtraUtility.ConvertDataStrToLong(rs.GetString("Datadoc"),"dd/MM/yyyy","ITX")  ' Simone
+				rowx(3) = ExtraUtility.ConvertDataStrToLong(rs.GetString("Datadoc"),"dd/MM/yy","ITX")  ' Simone
 				rowx(4) = rs.GetString("CodClifor")
 				rowx(5) = rs.GetString("RagSoc")
 				rowx(6) = rs.Getint("Trasmesso")
@@ -452,7 +455,7 @@ private Sub ListaDocChk(xTipoCliFor As String)
 				rowx(0) = "" ' CHECKBOX
 				rowx(1) = rs.GetString("TipoDoc")
 				rowx(2) = rs.getint("Numerodoc")
-				rowx(3) = ExtraUtility.ConvertDataStrToLong(rs.GetString("Datadoc"),"dd/MM/yyyy","ITX")  ' Simone
+				rowx(3) = ExtraUtility.ConvertDataStrToLong(rs.GetString("Datadoc"),"dd/MM/yy","ITX")  ' Simone
 				rowx(4) = rs.GetString("CodClifor")
 				rowx(5) = rs.GetString("RagSoc")
 				rowx(6) = rs.Getint("Trasmesso")

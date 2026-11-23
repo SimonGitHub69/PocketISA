@@ -63,6 +63,8 @@ Sub Activity_Create(FirstTime As Boolean)
 	AssicuraSchemaDocumenti
 	Activity.RemoveAllViews
 	Activity.LoadLayout("ListaDoc")
+	' Colonna Data: anno a 2 cifre (B4XTable usa DateTime.DateFormat)
+	DateTime.DateFormat = "dd/MM/yy"
 	CheckedRows = B4XCollections.CreateSet
 	' Prima i bottoni in basso (sopra nav bar), poi la tabella fino a loro
 	CreaBarraBottoniDocumenti
@@ -127,6 +129,7 @@ Private Sub RiposizionaBarraBottoniDocumenti
 End Sub
 
 Sub Activity_Resume
+	DateTime.DateFormat = "dd/MM/yy"
 	RiposizionaBarraBottoniDocumenti
 End Sub
 
@@ -273,7 +276,7 @@ Sub ListaDocChkNew
 			rowx(0) = ""
 			rowx(1) = sTipoDoc
 			rowx(2) = rs.getint("Numerodoc")
-			rowx(3) = ExtraUtility.ConvertDataStrToLong(sDataDoc,"dd/MM/yyyy","IT") 'Simone
+			rowx(3) = ExtraUtility.ConvertDataStrToLong(sDataDoc,"dd/MM/yy","IT") 'Simone
 			rowx(4) = sCodCliFor
 			Select Main.Ditta
 				Case "Gefin"
@@ -451,7 +454,7 @@ private Sub ListaDocChk(FirstTime As Boolean)
 				rowx(0) = "" ' CHECKBOX
 				rowx(1) = sTipoDoc
 				rowx(2) = rs.getint("Numerodoc")
-				rowx(3) = ExtraUtility.ConvertDataStrToLong(sDataDoc,"dd/MM/yyyy","IT") 'Simone
+				rowx(3) = ExtraUtility.ConvertDataStrToLong(sDataDoc,"dd/MM/yy","IT") 'Simone
 				rowx(4) = sCodCliFor
 				Select Main.Ditta
 					Case "Gefin"
