@@ -1021,7 +1021,7 @@ Sub formato_europeo_0dec(formatter As B4XFormatter)
 		DefaultFormat.MaximumFractions = 0
 		DefaultFormat.MinimumFractions = 0
 		DefaultFormat.MinimumIntegers = 1
-		formatter.AddFormatData(DefaultFormat, 0,0,False)
+		' Non riaggiungere DefaultFormat: e' gia' nella lista dopo Initialize
 	Catch
 		Log(LastException.Message) 'no changes will be made
 	End Try
@@ -1036,8 +1036,8 @@ Sub formato_europeo_2dec(formatter As B4XFormatter)
 		DefaultFormat.GroupingCharacter = "."
 		DefaultFormat.MaximumFractions = 2
 		DefaultFormat.MinimumFractions = 2
-		DefaultFormat.MinimumIntegers = 1 
-		formatter.AddFormatData(DefaultFormat, 0,0,False)
+		DefaultFormat.MinimumIntegers = 1
+		' Non riaggiungere DefaultFormat: e' gia' nella lista dopo Initialize
 	Catch
 		Log(LastException.Message) 'no changes will be made
 	End Try

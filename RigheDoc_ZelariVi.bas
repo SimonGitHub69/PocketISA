@@ -107,6 +107,7 @@ Sub Activity_Create(FirstTime As Boolean)
 	End If
 	Activity.LoadLayout("RigheDoc_ZelariVi")	
 	Sleep(0)
+	CifreRigaLeggibili
 	ExtraUtility.formato_europeo_2dec(formatter)
 	Panel2.Visible=False
 	' Bottoni a filo basso (niente gap grigio sotto), come ListaDoc
@@ -202,10 +203,119 @@ Sub Activity_Pause (UserClosed As Boolean)
 	
 End Sub
 
+' 100 e 22.5 escono dal bordo della cella: la riga cresce con la cifra, il resto della maschera scende.
+Private Sub CifreRigaLeggibili
+	PreparaCifra(EditText2)
+	PreparaCifra(EditText1)
+	PreparaCifra(EditText3)
+	PreparaCifra(EditText5)
+	' Il prezzo in riga resta a destra, non centrato come nel layout
+	EditText1.Gravity = Bit.Or(Gravity.CENTER_VERTICAL, Gravity.RIGHT)
+	Dim extra As Int = ExtraCifra(EditText2)
+	If extra > 0 Then
+		AllargaRigaCifre(extra)
+	End If
+	AdattaCifra(EditText2)
+	AdattaCifra(EditText1)
+	AdattaCifra(EditText3)
+	AdattaCifra(EditText5)
+End Sub
+
+Private Sub PreparaCifra(edt As EditText)
+	Try
+		Dim jo As JavaObject = edt
+		jo.RunMethod("setIncludeFontPadding", Array(False))
+		edt.Padding = Array As Int(2dip, 0, 2dip, 0)
+		Dim grav As Int = edt.Gravity
+		Dim horiz As Int = Bit.And(grav, Bit.Or(Gravity.LEFT, Bit.Or(Gravity.RIGHT, Gravity.CENTER_HORIZONTAL)))
+		If horiz = 0 Then horiz = Gravity.CENTER_HORIZONTAL
+		edt.Gravity = Bit.Or(Gravity.CENTER_VERTICAL, horiz)
+		edt.SingleLine = True
+	Catch
+		Log("PreparaCifra: " & LastException)
+	End Try
+End Sub
+
+' Pixel che mancano perche' la cifra stia tutta nella cella, con un filo di aria.
+Private Sub ExtraCifra(edt As EditText) As Int
+	Try
+		Dim jo As JavaObject = edt
+		Dim px As Float = jo.RunMethod("getTextSize", Null)
+		Dim need As Int = px + 10dip
+		Dim extra As Int = need - edt.Height
+		If extra < 1dip Then Return 0
+		If extra > 16dip Then extra = 16dip
+		Return extra
+	Catch
+		Log("ExtraCifra: " & LastException)
+		Return 8dip
+	End Try
+End Sub
+
+Private Sub AllargaRigaCifre(extra As Int)
+	Dim rowTop As Int = EditText2.Top
+	Dim oldBottom As Int = EditText2.Top + EditText2.Height
+	EditText1.Height = EditText1.Height + extra
+	EditText2.Height = EditText2.Height + extra
+	EditText3.Height = EditText3.Height + extra
+	EditText5.Height = EditText5.Height + extra
+	If Abs(btnDate.mBase.Top - rowTop) <= 8dip Then
+		btnDate.mBase.Height = btnDate.mBase.Height + extra
+	End If
+	If B4XFloatTextField1.mBase.Top >= oldBottom - 3dip Then
+		B4XFloatTextField1.mBase.Top = B4XFloatTextField1.mBase.Top + extra
+	End If
+	If B4XFloatTextField2.mBase.Top >= oldBottom - 3dip Then
+		B4XFloatTextField2.mBase.Top = B4XFloatTextField2.mBase.Top + extra
+	End If
+	If SwiftButton1.mBase.Top >= oldBottom - 3dip Then
+		SwiftButton1.mBase.Top = SwiftButton1.mBase.Top + extra
+	End If
+	If SwiftButton2.mBase.Top >= oldBottom - 3dip Then
+		SwiftButton2.mBase.Top = SwiftButton2.mBase.Top + extra
+	End If
+	If Button7.Top >= oldBottom - 3dip Then
+		Button7.Top = Button7.Top + extra
+	End If
+	If Panel2.Height < EditText2.Top + EditText2.Height + 8dip Then
+		Panel2.Height = EditText2.Top + EditText2.Height + 8dip
+	End If
+End Sub
+
+' Se dopo l'allargamento la cifra ancora non entra, il carattere scende solo del necessario.
+Private Sub AdattaCifra(edt As EditText)
+	Try
+		Dim jo As JavaObject = edt
+		Dim px As Float = jo.RunMethod("getTextSize", Null)
+		If edt.Height <= 8dip Then Return
+		If px + 4dip <= edt.Height Then Return
+		Dim scale As Float = ScalaCarattere
+		Dim newSp As Float = (edt.Height - 6dip) / (1dip * scale)
+		If newSp < 11 Then newSp = 11
+		edt.TextSize = newSp
+		edt.Padding = Array As Int(2dip, 0, 2dip, 0)
+	Catch
+		Log("AdattaCifra: " & LastException)
+	End Try
+End Sub
+
+Private Sub ScalaCarattere As Float
+	Try
+		Dim ctx As JavaObject
+		ctx.InitializeContext
+		Dim cfg As JavaObject = ctx.RunMethodJO("getResources", Null).RunMethod("getConfiguration", Null)
+		Dim scale As Float = cfg.GetField("fontScale")
+		If scale < 1 Then scale = 1
+		Return scale
+	Catch
+		Return 1
+	End Try
+End Sub
+
 Sub B4XTable1_DataUpdated
 	SetColumnAlignment(B4XTable1,"Descrizione",Gravity.LEFT)
 	SetColumnAlignment(B4XTable1,"Qta",Gravity.RIGHT)
-	SetColumnAlignment(B4XTable1,"PrzUnit",Gravity.RIGHT)
+	SetColumnAlignment(B4XTable1,"Prezzo",Gravity.RIGHT)
 	For i = 0 To B4XTable1.VisibleRowIds.Size-1
 		Dim RowId As Long = B4XTable1.VisibleRowIds.Get(i)
 		SetRowColor(i, SelectedRows.Contains(RowId))
@@ -235,7 +345,10 @@ Sub B4XTable1_DataUpdated
 		lbl3.TextSize = 13
 		lbl3.Typeface = Typeface.DEFAULT
 		lbl3.TextColor = Colors.RGB(9,0,104)
+		lbl3.Gravity = Bit.Or(Gravity.CENTER_VERTICAL, Gravity.RIGHT)
 		lbl3.Padding = Array As Int (0dip, 0dip, 5dip, 0dip)
+		Dim bxPrezzo As B4XView = pnl3.GetView(0)
+		bxPrezzo.SetTextAlignment("CENTER", "RIGHT")
 	Next
 End Sub
 
@@ -277,7 +390,6 @@ Sub B4XTable2_DataUpdated
 		lbl4.Typeface = Typeface.DEFAULT
 		lbl4.TextColor = Colors.RGB(9,0,104)
 		lbl4.Padding = Array As Int (0dip, 0dip, 5dip, 0dip)
-		ExtraUtility.CreateCustomFormat2dec(Col4_Column_T2,B4XTable2)
 	Next
 End Sub
 
@@ -319,7 +431,6 @@ Sub B4XTable3_DataUpdated
 		lbl4.Typeface = Typeface.DEFAULT
 		lbl4.TextColor = Colors.RGB(9,0,104)
 		lbl4.Padding = Array As Int (0dip, 0dip, 5dip, 0dip)
-		ExtraUtility.CreateCustomFormat2dec(Col4_Column_T3,B4XTable3)
 	Next
 End Sub
 
@@ -353,13 +464,13 @@ Private Sub  ListaVistaDocArt(CodCliFor As String, CodArticolo As String)
 		B4XTable2.RowHeight = 36dip
 		B4XTable2.BuildLayoutsCache(B4XTable2.MaximumRowsPerPage)
 		SelectedRows_T2 = B4XCollections.CreateSet
-		Dim Col1_Column_T2 As B4XTableColumn =  B4XTable2.AddColumn("Data", B4XTable2.COLUMN_TYPE_DATE) 		' Data Doc.
+		Col1_Column_T2 = B4XTable2.AddColumn("Data", B4XTable2.COLUMN_TYPE_DATE) 		' Data Doc.
 		Col1_Column_T2.Width = 140
-		Dim Col2_Column_T2 As B4XTableColumn =  B4XTable2.AddColumn("Descrizione", B4XTable2.COLUMN_TYPE_TEXT) 	' Descrizione
+		Col2_Column_T2 = B4XTable2.AddColumn("Descrizione", B4XTable2.COLUMN_TYPE_TEXT) 	' Descrizione
 		Col2_Column_T2.Width = 300
-		Dim Col3_Column_T2 As B4XTableColumn = B4XTable2.AddColumn("Qta", B4XTable2.COLUMN_TYPE_NUMBERS) 	    ' Quantita
+		Col3_Column_T2 = B4XTable2.AddColumn("Qta", B4XTable2.COLUMN_TYPE_NUMBERS) 	    ' Quantita
 		Col3_Column_T2.Width = 100
-		Dim Col4_Column_T2 As B4XTableColumn = B4XTable2.AddColumn("P. Netto", B4XTable2.COLUMN_TYPE_NUMBERS) 	' Prezzo netto
+		Col4_Column_T2 = B4XTable2.AddColumn("P. Netto", B4XTable2.COLUMN_TYPE_NUMBERS) 	' Prezzo netto
 		Col4_Column_T2.Width = 140	
 		'ExtraUtility.CreateCustomFormat(Col4_Column,B4XTable1)
 		'ExtraUtility.CreateCustomFormat2dec(Col5_Column,B4XTable1)
@@ -399,13 +510,13 @@ Private Sub  ListaVistaDocAll(CodCliFor As String)
 		B4XTable3.RowHeight = 76dip
 		B4XTable3.BuildLayoutsCache(B4XTable3.MaximumRowsPerPage)
 		SelectedRows_T3 = B4XCollections.CreateSet
-		Dim Col1_Column_T3 As B4XTableColumn =  B4XTable3.AddColumn("Data", B4XTable3.COLUMN_TYPE_DATE) 		' Data Doc.
+		Col1_Column_T3 = B4XTable3.AddColumn("Data", B4XTable3.COLUMN_TYPE_DATE) 		' Data Doc.
 		Col1_Column_T3.Width = 115
-		Dim Col2_Column_T3 As B4XTableColumn =  B4XTable3.AddColumn("Descrizione", B4XTable3.COLUMN_TYPE_TEXT) 	' Descrizione
+		Col2_Column_T3 = B4XTable3.AddColumn("Descrizione", B4XTable3.COLUMN_TYPE_TEXT) 	' Descrizione
 		Col2_Column_T3.Width = 350
-		Dim Col3_Column_T3 As B4XTableColumn = B4XTable3.AddColumn("Qta", B4XTable3.COLUMN_TYPE_NUMBERS) 		' Qta
-		Col3_Column_T3.Width = 100	
-		Dim Col4_Column_T3 As B4XTableColumn = B4XTable3.AddColumn("P. Netto", B4XTable3.COLUMN_TYPE_NUMBERS) 	' Prezzo netto
+		Col3_Column_T3 = B4XTable3.AddColumn("Qta", B4XTable3.COLUMN_TYPE_NUMBERS) 		' Qta
+		Col3_Column_T3.Width = 100
+		Col4_Column_T3 = B4XTable3.AddColumn("P. Netto", B4XTable3.COLUMN_TYPE_NUMBERS) 	' Prezzo netto
 		Col4_Column_T3.Width = 140
 		'ExtraUtility.CreateCustomFormat(Col4_Column,B4XTable1)
 		ExtraUtility.CreateCustomFormat2dec(Col4_Column_T3,B4XTable3)
@@ -446,13 +557,13 @@ private Sub ListaRigheDoc
 		B4XTable1.AddColumn("n.", B4XTable1.COLUMN_TYPE_NUMBERS).Width=85 ' n
 		B4XTable1.AddColumn("CodArt", B4XTable1.COLUMN_TYPE_TEXT).Width=1 ' CODART
 		' B4XTable1.AddColumn("Descrizione", B4XTable1.COLUMN_TYPE_TEXT).Width=380 ' DESCRIZIONE
-		Dim Col3_Column As B4XTableColumn =  B4XTable1.AddColumn("Descrizione", B4XTable1.COLUMN_TYPE_TEXT) ' Descrizione
-		Col3_Column.Width = 380	
-		Dim Col4_Column As B4XTableColumn =  B4XTable1.AddColumn("Qta", B4XTable1.COLUMN_TYPE_NUMBERS)
-		Col4_Column.Width=100 ' NUMBERS	
-		Dim Col5_Column As B4XTableColumn = B4XTable1.AddColumn("Prezzo", B4XTable1.COLUMN_TYPE_NUMBERS)
+		Col3_Column = B4XTable1.AddColumn("Descrizione", B4XTable1.COLUMN_TYPE_TEXT) ' Descrizione
+		Col3_Column.Width = 380
+		Col4_Column = B4XTable1.AddColumn("Qta", B4XTable1.COLUMN_TYPE_NUMBERS)
+		Col4_Column.Width=100 ' NUMBERS
+		Col5_Column = B4XTable1.AddColumn("Prezzo", B4XTable1.COLUMN_TYPE_NUMBERS)
 		Col5_Column.Width=140 ' NUMBERS
-		Dim Col6_Column As B4XTableColumn = B4XTable1.AddColumn("Sconto", B4XTable1.COLUMN_TYPE_TEXT)
+		Col6_Column = B4XTable1.AddColumn("Sconto", B4XTable1.COLUMN_TYPE_TEXT)
 		Col6_Column.Width=1 ' NUMBERS
 		Col6_Column.Panel.Visible = False
 		'B4XTable1.NumberOfFrozenColumns= 1
@@ -503,11 +614,21 @@ End Sub
 
 Sub SetColumnAlignment(tableName As B4XTable, columnID As String, alignment As Int)
 	Dim column As B4XTableColumn = tableName.GetColumn(columnID)
+	Dim hAlign As String
+	If alignment = Gravity.RIGHT Then
+		hAlign = "RIGHT"
+	Else If alignment = Gravity.LEFT Then
+		hAlign = "LEFT"
+	Else
+		hAlign = "CENTER"
+	End If
 	For i = 1 To column.CellsLayouts.Size - 1        'starts at 1 due to header
 		Dim pnl As B4XView = column.CellsLayouts.Get(i)
 		Dim lbl As Label = pnl.GetView(0)
 		lbl.Gravity = Bit.Or(Gravity.CENTER_VERTICAL, alignment)
 		lbl.Padding= Array As Int (0, 0, 10, 0)
+		Dim bx As B4XView = pnl.GetView(0)
+		bx.SetTextAlignment("CENTER", hAlign)
 	Next
 End Sub
 
@@ -801,17 +922,22 @@ Sub Button1_Click ' Modifica Record (Riga)
 				EditText1.Text = rs.GetDouble("PrzUnit")
 				EditText3.Text = rs.GetString("Sconto")
 				Dim DataConsegna As String
-				Dim DataConsegna_Long As Long	
-				DataConsegna = rs.GetString("DataConsegna")			
-				If(DataConsegna.Length>8) Then
-					DateTime.DateFormat = "dd-MM-yyyy"
-					DataConsegna = DataConsegna.SubString2(0,10)					
-				Else
-					DateTime.DateFormat = "dd-MM-yy"
-					DataConsegna = DataConsegna.SubString2(0,8)					
-				End If
-				DataConsegna_Long = DateTime.DateParse(DataConsegna)
-				btnDate.xLBL.text = ExtraUtility.DateToFormat(DataConsegna_Long,"dd-MM-yyyy","","IT")		
+				Dim DataConsegna_Long As Long
+				DataConsegna = rs.GetString("DataConsegna")
+				If DataConsegna <> Null Then DataConsegna = DataConsegna.Trim
+				If DataConsegna <> Null And DataConsegna.Length >= 8 Then
+					' In archivio puo' arrivare 19/11/2026 oppure 19-11-2026
+					DataConsegna = DataConsegna.Replace("/", "-")
+					If DataConsegna.Length > 10 Then DataConsegna = DataConsegna.SubString2(0, 10)
+					If DataConsegna.Length > 8 Then
+						DateTime.DateFormat = "dd-MM-yyyy"
+					Else
+						DateTime.DateFormat = "dd-MM-yy"
+						DataConsegna = DataConsegna.SubString2(0, 8)
+					End If
+					DataConsegna_Long = DateTime.DateParse(DataConsegna)
+					btnDate.xLBL.text = ExtraUtility.DateToFormat(DataConsegna_Long,"dd-MM-yyyy","","IT")
+				End If		
 				EditText5.Text=rs.getstring("RIFCLIENTE")
 				B4XFloatTextField1.Text=rs.GetString("Note")
 				B4XFloatTextField2.Text=rs.GetString("VARIAMISURE")
@@ -1063,10 +1189,6 @@ Sub EditText4_FocusChanged (HasFocus As Boolean)
 			End If
 		End If
 	End If
-End Sub
-
-Sub EditText2_TextChanged (Old As String, New As String)
-
 End Sub
 
 Sub EditText2_FocusChanged (HasFocus As Boolean)

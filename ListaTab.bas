@@ -51,53 +51,53 @@ Sub Activity_Create(FirstTime As Boolean)
 		SQLDataAccess.Initialize(ExtraUtility.DirExt, Main.DBName, False)
 	End If
 	Activity.LoadLayout("ListaTab")
-	Sleep(0)
-	Dialog.Initialize(Activity)
+	' Nascondi subito i Swift del layout, prima di qualsiasi Sleep (altrimenti flash dei vecchi bottoni)
+	NascondiSwiftLista
 	Select NewDocument.vTipoTab
-		Case 1
+		Case 1, 2, 4
 			ShowElimina = False
 			ShowAzzera = False
 			ShowSalva = True
-		    CliForTab(Choose_Menu.vTipoCliFor)	
-		Case 2
-			ShowElimina = False
-			ShowAzzera = False
-			ShowSalva = True
-			ListinoTab
-		Case 3		
-			' Lista tabelle: Elimina, Azzera, Salva
+		Case 3
 			ShowElimina = True
 			ShowAzzera = True
 			ShowSalva = True
-			ListaTabSqlite				
-		Case 4
-			ShowElimina = False
-			ShowAzzera = False
-			ShowSalva = True
-			ListaDocTab(TesteDoc_Kuore_Spunta.vTipoDoc)	
 		Case Else
 			ShowElimina = False
 			ShowAzzera = False
 			ShowSalva = False
-	End Select	
+	End Select
+	StileBottoniListaTabelle
+	Dialog.Initialize(Activity)
+	Sleep(0)
+	Select NewDocument.vTipoTab
+		Case 1
+			CliForTab(Choose_Menu.vTipoCliFor)
+		Case 2
+			ListinoTab
+		Case 3
+			ListaTabSqlite
+		Case 4
+			ListaDocTab(TesteDoc_Kuore_Spunta.vTipoDoc)
+	End Select
 End Sub
 
 ' Solo il bottone blu di conferma (Clienti/Listino/Documenti).
-Private Sub PreparaFrecciaConferma As ResumableSub
+Private Sub PreparaFrecciaConferma
 	Try
 		ShowElimina = False
 		ShowAzzera = False
 		ShowSalva = True
 		FooterBarH = 58dip
-		Wait For (StileBottoniListaTabelle) Complete (ok As Boolean)
+		StileBottoniListaTabelle
 		If pnlFooter.IsInitialized Then pnlFooter.BringToFront
 	Catch
 		Log("PreparaFrecciaConferma: " & LastException)
 	End Try
-	Return True
 End Sub
 
 Sub Activity_Resume
+	NascondiSwiftLista
 	If pnlFooter.IsInitialized Then pnlFooter.BringToFront
 End Sub
 
@@ -143,7 +143,7 @@ private Sub CliForTab(TipoCliFor As String)
 		Sleep(0) 'this is required as the table layout is not immediately created.'
 		B4XTable1.Clear
 		SelectedRows = B4XCollections.CreateSet
-		Wait For (PreparaFrecciaConferma) Complete (okF As Boolean)
+		PreparaFrecciaConferma
 
 		B4XTable1.SearchField.HintText = "Cerca"
 		B4XTable1.SearchField.Update
@@ -245,7 +245,7 @@ private Sub CliForTab(TipoCliFor As String)
 			lbl3.Ellipsize = "END"
 		Next
 
-		Wait For (PreparaFrecciaConferma) Complete (okF2 As Boolean)
+		PreparaFrecciaConferma
 	Catch
 		Log(LastException)
 	End Try
@@ -319,7 +319,7 @@ private Sub ListaDocTab(TipoDoc As String)
 End Sub
 
 ' Stessa barra di Impostazioni: Elimina | Azzera | Salva.
-Private Sub StileBottoniListaTabelle As ResumableSub
+Private Sub StileBottoniListaTabelle
 	Try
 		NascondiSwiftLista
 
@@ -361,7 +361,7 @@ Private Sub StileBottoniListaTabelle As ResumableSub
 		If NewDocument.vTipoTab = 1 Or NewDocument.vTipoTab = 2 Then
 			btnTabSalva.Typeface = Typeface.FONTAWESOME
 			btnTabSalva.Text = Chr(0xF061)
-			btnTabSalva.TextSize = 34
+			btnTabSalva.TextSize = 26
 		Else
 			btnTabSalva.Typeface = Typeface.DEFAULT_BOLD
 			btnTabSalva.Text = "Salva"
@@ -374,7 +374,6 @@ Private Sub StileBottoniListaTabelle As ResumableSub
 	Catch
 		Log("StileBottoniListaTabelle: " & LastException)
 	End Try
-	Return True
 End Sub
 
 Private Sub PreparaBottoneLista (btn As Button, testo As String, colore As Int)
@@ -549,7 +548,7 @@ private Sub ListaTabSqlite
 			lbl2.Padding = Array As Int(2dip, 0, 10dip, 0)
 		Next
 		' Bottoni per ultimi: sopra la tabella e visibili
-		Wait For (StileBottoniListaTabelle) Complete (ok2 As Boolean)
+		StileBottoniListaTabelle
 		If B4XTable1.mBase.IsInitialized Then
 			B4XTable1.mBase.Height = Max(180dip, (100%y - FooterBarH) - B4XTable1.mBase.Top - 4dip)
 		End If
@@ -563,7 +562,7 @@ private Sub ListinoTab
 		Sleep(0) 'this is required as the table layout is not immediately created.'
 		B4XTable1.Clear
 		SelectedRows = B4XCollections.CreateSet
-		Wait For (PreparaFrecciaConferma) Complete (okF As Boolean)
+		PreparaFrecciaConferma
 
 		B4XTable1.SearchField.HintText = "Cerca"
 		B4XTable1.SearchField.Update
@@ -632,7 +631,7 @@ private Sub ListinoTab
 			lbl2.Ellipsize = "END"
 		Next
 
-		Wait For (PreparaFrecciaConferma) Complete (okF2 As Boolean)
+		PreparaFrecciaConferma
 	Catch
 		Log(LastException)
 	End Try

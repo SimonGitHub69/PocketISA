@@ -77,6 +77,7 @@ Sub Globals
 	Private Const IDX_PATH_SOUNDS As Int = 13
 	Private Const IDX_SERIAL As Int = 14
 	Private pathEditSounds As Boolean
+	Private TitleH As Int
 	Private FooterBarH As Int
 	Private pnlGap1 As Panel
 	Private pnlGap2 As Panel
@@ -114,17 +115,21 @@ Sub Activity_Create(FirstTime As Boolean)
 		Starter.SerialNumber = Main.serialNo
 	End If
 
+	Dim fontScale As Float = FontScaleSistema
+	TitleH = Max(40dip, 22dip * fontScale + 14dip)
 	lblTitolo.Initialize("")
 	lblTitolo.Text = "IMPOSTAZIONI"
-	lblTitolo.TextSize = 20
+	lblTitolo.TextSize = 18
 	lblTitolo.TextColor = Colors.White
 	lblTitolo.Color = Colors.RGB(33, 150, 243)
 	lblTitolo.Gravity = Gravity.CENTER
-	Activity.AddView(lblTitolo, 0dip, 0dip, 100%x, 30dip)
+	lblTitolo.Padding = Array As Int(0, 0, 0, 0)
+	Activity.AddView(lblTitolo, 0dip, 0dip, 100%x, TitleH)
+	TestoSenzaPadding(lblTitolo)
 
-	FooterBarH = 68dip
+	FooterBarH = Max(58dip, 30dip * fontScale + 12dip)
 	Scrollview1.Initialize(0)
-	Activity.AddView(Scrollview1, 0dip, 30dip, 100%x, Max(120dip, 100%y - 30dip - FooterBarH))
+	Activity.AddView(Scrollview1, 0dip, TitleH, 100%x, Max(120dip, 100%y - TitleH - FooterBarH))
 
 	' Path DB da file config (non dal SQLite)
 	ExtraUtility.LoadPathDBConfig
@@ -173,8 +178,11 @@ Sub Activity_Create(FirstTime As Boolean)
 	)
 
 	Dim i As Int
-	Dim gap As Int = 36dip
-	Dim top0 As Int = 10dip
+	' 14sp diventa piu' alto con la percentuale carattere: la riga deve crescere con lei
+	Dim rowH As Int = 24dip * fontScale + 16dip
+	If rowH < 48dip Then rowH = 48dip
+	Dim gap As Int = rowH + 6dip
+	Dim top0 As Int = 6dip
 
 	values_edt = Array As EditText()
 	Dim values_edt(labels.Length) As EditText
@@ -192,6 +200,9 @@ Sub Activity_Create(FirstTime As Boolean)
 		lbl.Color = Colors.RGB(245, 245, 245)
 		lbl.TextColor = Colors.Black
 		lbl.Gravity = Gravity.CENTER_VERTICAL
+		lbl.Padding = Array As Int(4dip, 0, 2dip, 0)
+		lbl.SingleLine = True
+		TestoSenzaPadding(lbl)
 
 		edt.Initialize("edt")
 		edt.Text = values(i)
@@ -199,15 +210,19 @@ Sub Activity_Create(FirstTime As Boolean)
 		edt.Color = Colors.LightGray
 		edt.TextColor = Colors.Blue
 		edt.Tag = i
+		edt.SingleLine = True
+		edt.Padding = Array As Int(4dip, 0, 4dip, 0)
+		edt.Gravity = Bit.Or(Gravity.CENTER_VERTICAL, Gravity.LEFT)
+		TestoSenzaPadding(edt)
 
-		Scrollview1.Panel.AddView(lbl, 3%x, top0 + i * gap, 38%x, 35dip)
-		Scrollview1.Panel.AddView(edt, 42%x, top0 + i * gap, 56%x, 35dip)
+		Scrollview1.Panel.AddView(lbl, 2%x, top0 + i * gap, 44%x, rowH)
+		Scrollview1.Panel.AddView(edt, 47%x, top0 + i * gap, 51%x, rowH)
 
 		values_edt(i) = edt
 
 		If labels(i) = "Password (SQL)" Or labels(i) = "Pwd (palmare)" Then
 			edt.PasswordMode = True
-			edt.Gravity = Gravity.LEFT
+			edt.Gravity = Bit.Or(Gravity.CENTER_VERTICAL, Gravity.LEFT)
 		Else If labels(i) = "Serial No." Then
 			' Stessa riga degli altri campi: numero centrato, senza riquadro piu' alto
 			edt.Enabled = False
@@ -220,14 +235,14 @@ Sub Activity_Create(FirstTime As Boolean)
 			' Cliccabile: apre maschera grande per editare il percorso
 			edt.Enabled = True
 			edt.TextColor = Colors.Blue
-			edt.Gravity = Gravity.LEFT
+			edt.Gravity = Bit.Or(Gravity.CENTER_VERTICAL, Gravity.LEFT)
 			edt.SingleLine = True
 			edt.TextSize = 11
 			edt.InputType = 0 ' solo tap, non tastiera inline
 		Else If labels(i).StartsWith("IP") Or labels(i).StartsWith("Porta") Then
-			edt.Gravity = Gravity.RIGHT
+			edt.Gravity = Bit.Or(Gravity.CENTER_VERTICAL, Gravity.RIGHT)
 		Else
-			edt.Gravity = Gravity.LEFT
+			edt.Gravity = Bit.Or(Gravity.CENTER_VERTICAL, Gravity.LEFT)
 		End If
 	Next
 
@@ -235,20 +250,48 @@ Sub Activity_Create(FirstTime As Boolean)
 	StileBottoniImpostazioni
 End Sub
 
+' Scala carattere di Android (Impostazioni > Dimensione carattere). 1 = 100%.
+Private Sub FontScaleSistema As Float
+	Try
+		Dim jo As JavaObject
+		jo.InitializeContext
+		Dim cfg As JavaObject = jo.RunMethodJO("getResources", Null).RunMethod("getConfiguration", Null)
+		Dim scale As Float = cfg.GetField("fontScale")
+		If scale < 1 Then scale = 1
+		Return scale
+	Catch
+		Log("FontScaleSistema: " & LastException)
+		Return 1
+	End Try
+End Sub
+
+' Toglie il padding interno del font, che con la scala alta taglia le lettere nel bordo della riga.
+Private Sub TestoSenzaPadding (v As View)
+	Try
+		Dim jo As JavaObject = v
+		jo.RunMethod("setIncludeFontPadding", Array(False))
+	Catch
+		Log("TestoSenzaPadding: " & LastException)
+	End Try
+End Sub
+
 ' Barra in basso: Help | Parametri | Salva. Bottoni normali, non gli SwiftButton del layout.
 Private Sub StileBottoniImpostazioni
 	Try
 		Dim margin As Int = 6dip
 		Dim gap As Int = 6dip
-		Dim barH As Int = 58dip
+		Dim barH As Int = FooterBarH
+		If barH < 58dip Then barH = 58dip
 		Dim topBtn As Int = 100%y - barH
 		If topBtn < 0 Then topBtn = 0
 		FooterBarH = barH
 
 		If Scrollview1.IsInitialized Then
-			Dim scrollH As Int = topBtn - 30dip
+			Dim scrollTop As Int = TitleH
+			If scrollTop < 30dip Then scrollTop = 30dip
+			Dim scrollH As Int = topBtn - scrollTop
 			If scrollH < 80dip Then scrollH = 80dip
-			Scrollview1.SetLayout(0dip, 30dip, 100%x, scrollH)
+			Scrollview1.SetLayout(0dip, scrollTop, 100%x, scrollH)
 		End If
 
 		If pnlFooter.IsInitialized = False Then
@@ -299,6 +342,8 @@ Private Sub PreparaBottoneFooter (btn As Button, testo As String, colore As Int)
 	btn.TextColor = Colors.White
 	btn.Color = colore
 	btn.Gravity = Gravity.CENTER
+	btn.Padding = Array As Int(2dip, 0, 2dip, 0)
+	TestoSenzaPadding(btn)
 	btn.Enabled = True
 	btn.Visible = True
 End Sub

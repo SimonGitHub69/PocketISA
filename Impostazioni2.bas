@@ -225,7 +225,7 @@ Private Sub StileBottoneParametri
 		btnFooterSalva.SetLayout(margin + (slotW + gap) * 2, 4dip, slotW, barH - 8dip)
 		btnFooterSalva.Typeface = Typeface.FONTAWESOME
 		btnFooterSalva.Text = Chr(0xF061)
-		btnFooterSalva.TextSize = 34
+		btnFooterSalva.TextSize = 26
 		btnFooterSalva.TextColor = Colors.White
 		btnFooterSalva.Color = Colors.RGB(25, 118, 210)
 		btnFooterSalva.Gravity = Gravity.CENTER

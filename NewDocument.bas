@@ -360,7 +360,7 @@ Private Sub StileFrecciaTestata
 		btnFreccia.SetLayout(margin + (slotW + gap) * 2, 4dip, slotW, barH - 8dip)
 		btnFreccia.Typeface = Typeface.FONTAWESOME
 		btnFreccia.Text = Chr(0xF061)
-		btnFreccia.TextSize = 34
+		btnFreccia.TextSize = 26
 		btnFreccia.TextColor = Colors.White
 		btnFreccia.Color = Colors.RGB(25, 118, 210)
 		btnFreccia.Gravity = Gravity.CENTER
